@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>IDEAVA — CMO/VP of Marketing on Demand</title>
+<meta name="description" content="Editorial, experimental one‑pager for executive marketing positioning." />
+<style>
+  :root{
+    --bg:#f5f2ea;
+    --ink:#141414;
+    --muted:#6b6b6b;
+    --line:#e5e0d6;
+    --accent:#e11d48;
+    --accent-2:#0ea5e9;
+    --rad:18px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family: ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial;line-height:1.5}
+
+/* IMPROVED MOBILE CONTACT FORM */
+section#contact form{
+  display:grid;
+  gap:12px;
+  grid-template-columns: 1fr; /* Single column on mobile */
+  align-items:start;
+  max-width: 1100px;
+  margin-top: 8px;
+}
+
+/* Medium screens and up - use responsive columns */
+@media (min-width: 640px) {
+  section#contact form{
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+
+section#contact form input,
+section#contact form textarea{
+  padding:14px 16px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  font:inherit;
+  color:var(--ink);
+  width: 100%; /* Ensure full width */
+  min-height: 44px; /* Better touch targets */
+}
+
+section#contact form input{ height:48px; }
+
+section#contact form input::placeholder,
+section#contact form textarea::placeholder{ color: var(--muted); }
+
+section#contact form input:focus,
+section#contact form textarea:focus{
+  outline:none;
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 3px rgba(14,165,233,.18);
+}
+
+section#contact form textarea{ 
+  grid-column: 1 / -1; 
+  min-height: 140px; 
+  resize: vertical; /* Allow vertical resizing only */
+}
+
+section#contact form > div:first-of-type{
+  grid-column: 1 / -1;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content: flex-start; /* Better mobile alignment */
+}
+
+section#contact form .note{ grid-column: 1 / -1; }
+
+  /* IMPROVED MOBILE HEADER */
+  header{
+    position:sticky;
+    top:0;
+    z-index:999;
+    background:var(--bg);
+    border-bottom:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 20px; /* Reduced padding for mobile */
+    min-height: 60px;
+  }
+  
+  .brand{font-weight:800;letter-spacing:.02em;font-size:18px;}
+  .role{color:var(--muted);font-size:12px;display:none;} /* Hide on mobile */
+  
+  /* Show role on larger screens */
+  @media (min-width: 640px) {
+    .role{display:block;font-size:14px;}
+    header{padding:12px 28px;}
+  }
+  
+  header nav {
+    display:flex;
+    gap:12px; /* Reduced gap for mobile */
+    flex-wrap:wrap;
+  }
+  
+  header nav a {
+    color:var(--ink);
+    text-decoration:none;
+    font-weight:700;
+    padding:6px 8px; /* Slightly smaller padding */
+    outline:none;
+    font-size:14px;
+    min-height:44px; /* Better touch targets */
+    display:flex;
+    align-items:center;
+  }
+  
+  /* Larger screens get more spacing */
+  @media (min-width: 640px) {
+    header nav {gap:20px;}
+    header nav a {padding:6px 0;font-size:16px;}
+  }
+  
+  header nav a:hover{color:var(--accent)}
+  header nav a:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px;border-radius:6px}
+  header nav a[aria-current="true"]{color:#fff;background:var(--ink);border-radius:8px;padding:6px 10px}
+
+  /* IMPROVED MOBILE SECTIONS */
+  section{
+    border-bottom:1px solid var(--line);
+    padding:40px 20px; /* Reduced padding for mobile */
+    scroll-margin-top:60px;
+  }
+  
+  /* Larger screens get more padding */
+  @media (min-width: 640px) {
+    section{padding:56px 6vw;}
+  }
+  
+  @media (min-width: 1024px) {
+    section{padding:64px 6vw;}
+  }
+
+  .kicker{font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:var(--accent);font-weight:900}
+  
+  h1{
+    font-size: clamp(32px,8vw,92px); /* Better mobile scaling */
+    line-height:1.05; /* Slightly more line height for readability */
+    letter-spacing:-.02em;
+    margin:10px 0 18px;
+  }
+  
+  .lede{
+    font-size: clamp(16px,4vw,22px); /* Better mobile scaling */
+    max-width:72ch;
+    color:var(--muted);
+    line-height:1.6; /* Better readability */
+  }
+  
+  .cta{
+    display:flex;
+    flex-direction: column; /* Stack buttons on mobile */
+    gap:12px;
+    margin-top:22px;
+  }
+  
+  /* Side-by-side buttons on larger screens */
+  @media (min-width: 480px) {
+    .cta{flex-direction: row;flex-wrap:wrap;}
+  }
+  
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:14px 20px; /* Better touch targets */
+    border-radius:999px;
+    border:1px solid var(--ink);
+    text-decoration:none;
+    font-weight:800;
+    min-height:48px;
+    text-align:center;
+  }
+  
+  .btn--fill{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .btn--ghost{background:transparent;color:var(--ink)}
+
+  /* IMPROVED MOBILE GRIDS */
+  .caps { 
+    display:grid; 
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap:16px; 
+    margin-top:28px; 
+  }
+  
+  /* Two columns on tablets, full grid on desktop */
+  @media (min-width: 640px) {
+    .caps{grid-template-columns: repeat(2,1fr);gap:18px;}
+  }
+  
+  @media (min-width: 1024px) {
+    .caps{grid-template-columns: repeat(4,1fr);}
+  }
+  
+  .cap { 
+    background:#fff; 
+    border:1px solid var(--line); 
+    border-radius: var(--rad); 
+    padding:20px; 
+  }
+  .cap h3 { margin:6px 0 8px; font-size:18px; }
+  .cap p { color:var(--muted); font-size:15px;line-height:1.5; }
+  .cap strong { color:var(--accent); }
+
+  .slabs { 
+    display:grid; 
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap:16px; 
+    margin-top:28px; 
+  }
+  
+  /* Multi-column on larger screens */
+  @media (min-width: 640px) {
+    .slabs{grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));}
+  }
+  
+  .slab { 
+    background:#101010; 
+    color:#fafafa; 
+    border-radius:12px; 
+    padding:24px; 
+    border:1px solid #000; 
+    box-shadow:0 6px 18px rgba(0,0,0,.12);
+    text-align:center; /* Center align stats on mobile */
+  }
+  
+  .stat { 
+    font-size: clamp(24px,6vw,42px); 
+    font-weight:900;
+    line-height:1.2; 
+  }
+  .slab small { color:#bdbdbd;display:block;margin-top:8px; }
+
+  .cases { display:grid; gap:18px; margin-top:26px; }
+  .case { 
+    display:grid; 
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap:16px; 
+    align-items:start; 
+    padding:20px; 
+    border:1px solid var(--line); 
+    border-radius:12px; 
+    background:#fff; 
+  }
+  
+  /* Two column layout on larger screens */
+  @media (min-width: 640px) {
+    .case{grid-template-columns: 1fr 220px;gap:18px;padding:18px;}
+  }
+  
+  .case h4 { margin:8px 0 6px;font-size:18px; }
+  .case p { color:#6b6b6b; margin:0;line-height:1.5; }
+  .badge { 
+    display:inline-block; 
+    padding:6px 10px; 
+    border-radius:999px; 
+    background:#ffe4e8; 
+    color:#7f1026; 
+    border:1px solid #ffc2cd; 
+    font-weight:900;
+    font-size:12px;
+    margin-bottom:8px;
+  }
+
+  .note { color:var(--muted); font-size:14px;line-height:1.6; }
+
+  /* IMPROVED MOBILE MARQUEE */
+  .marquee { 
+    overflow:hidden; 
+    white-space:nowrap; 
+    border-top:1px solid var(--line); 
+    border-bottom:1px solid var(--line); 
+    background:#fff;
+    padding:4px 0; /* Add some vertical padding */
+  }
+  
+  .marquee-track { 
+    display:inline-block; 
+    padding:8px 0; 
+    animation:marquee 35s linear infinite; /* Slower on mobile */
+    will-change:transform; 
+    white-space:nowrap; 
+  }
+  
+  /* Faster animation on larger screens */
+  @media (min-width: 768px) {
+    .marquee-track{animation:marquee 28s linear infinite;padding:10px 0;}
+  }
+  
+  .marquee:hover .marquee-track { animation-play-state:paused; }
+  .tag { 
+    display:inline-flex; 
+    align-items:center; 
+    padding:6px 12px; 
+    border:1px solid var(--line); 
+    border-radius:999px; 
+    margin:4px 8px; /* Smaller margins on mobile */
+    background:#fff; 
+    color:var(--ink);
+    font-size:13px;
+  }
+  
+  /* Larger tags on bigger screens */
+  @media (min-width: 768px) {
+    .tag{margin:6px 12px;font-size:14px;}
+  }
+  
+  .dot { 
+    width:6px; 
+    height:6px; 
+    border-radius:50%; 
+    background:var(--accent); 
+    margin-right:6px; 
+    flex:0 0 6px; 
+  }
+  
+  /* Larger dots on bigger screens */
+  @media (min-width: 768px) {
+    .dot{width:8px;height:8px;margin-right:8px;flex:0 0 8px;}
+  }
+
+  /* MOBILE-SPECIFIC IMPROVEMENTS */
+  
+  /* Better blockquotes on mobile */
+  blockquote {
+    font-size:16px;
+    line-height:1.6;
+    margin:20px 0;
+    padding:0;
+    font-style:italic;
+    color:var(--muted);
+  }
+  
+  @media (min-width: 640px) {
+    blockquote{font-size:18px;}
+  }
+
+  /* Ensure text is readable on small screens */
+  h2 {
+    font-size: clamp(24px,5vw,32px);
+    line-height:1.3;
+  }
+
+  /* Better spacing for mobile */
+  @media (max-width: 639px) {
+    .kicker{margin-bottom:8px;}
+    h1{margin:8px 0 16px;}
+    h2{margin:8px 0 16px;}
+  }
+
+  @keyframes marquee { from{ transform:translateX(0) } to{ transform:translateX(-50%) } }
+  @media (prefers-reduced-motion: reduce){ 
+    .marquee-track{ animation:none } 
+    html{ scroll-behavior:auto } 
+  }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="brand">IDEAVA</div>
+    <div class="role">Fractional CMO / VP of Marketing</div>
+  </div>
+  <nav aria-label="Primary">
+    <a href="#intro" data-link>Intro</a>
+    <a href="#capabilities" data-link>Capabilities</a>
+    <a href="#work" data-link>Work</a>
+    <a href="#notes" data-link>Notes</a>
+    <a href="#contact" data-link>Contact</a>
+  </nav>
+</header>
+
+<main class="main">
+    <!-- Intro / Hero -->
+    <section id="intro">
+      <div class="kicker">Executive Marketing</div>
+      <h1>Strategy × Story × Systems<br/>to Create Compounding Growth</h1>
+      <p class="lede">We build repeatable revenue engines for B2B companies by fusing positioning, demand generation, and team leadership. Less noise, more signal. Less vanity, more pipeline.</p>
+      <div class="cta">
+        <a class="btn btn--fill" href="#work">See Track Record</a>
+        <a class="btn btn--ghost" href="#contact">Start a Conversation</a>
+      </div>
+    </section>
+
+    <!-- Marquee -->
+    <section aria-label="Highlights">
+      <div class="marquee" role="region" aria-roledescription="carousel" aria-label="Highlights carousel">
+        <div class="marquee-track">
+          <span class="tag"><span class="dot"></span>CEEZER</span>
+          <span class="tag"><span class="dot" style="background:var(--accent-2)"></span>UP42</span>
+          <span class="tag"><span class="dot"></span>Beta Energy</span>
+          <span class="tag"><span class="dot" style="background:var(--accent-2)"></span>Demand Gen</span>
+          <span class="tag"><span class="dot"></span>ABM</span>
+          <span class="tag"><span class="dot" style="background:var(--accent-2)"></span>RevOps</span>
+          <span class="tag"><span class="dot"></span>Brand Strategy</span>
+          <!-- duplicate for infinite loop -->
+          <span class="tag"><span class="dot"></span>CEEZER</span>
+          <span class="tag"><span class="dot" style="background:var(--accent-2)"></span>UP42</span>
+          <span class="tag"><span class="dot"></span>Beta Energy</span>
+          <span class="tag"><span class="dot" style="background:var(--accent-2)"></span>Demand Gen</span>
+          <span class="tag"><span class="dot"></span>ABM</span>
+          <span class="tag"><span class="dot" style="background:var(--accent-2)"></span>RevOps</span>
+          <span class="tag"><span class="dot"></span>Brand Strategy</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Capabilities -->
+    <section id="capabilities">
+      <div class="kicker">Capabilities</div>
+      <h2>Where I Make the Biggest Difference</h2>
+      <div class="caps">
+        <div class="cap">
+          <h3>Revenue Architecture</h3>
+          <p>From <strong>ICP & offer</strong> to channels and SLAs — a demand engine designed to scale, not stall.</p>
+        </div>
+        <div class="cap">
+          <h3>Positioning & Narrative</h3>
+          <p>Own the category conversation. Translate product truth into <strong>sales power</strong>.</p>
+        </div>
+        <div class="cap">
+          <h3>Go‑to‑Market Ops</h3>
+          <p>Attribution, routing, and dashboards that make marketing <strong>undeniably revenue‑driving</strong>.</p>
+        </div>
+        <div class="cap">
+          <h3>Team Leadership</h3>
+          <p>Hire, mentor, and organize a team to ship, learn fast, and <strong>compound wins</strong>.</p>
+        </div>
+      </div>
+
+      <div class="slabs">
+        <div class="slab"><div class="stat">+230%<br/>enterprise leads</div><small>9 months • climate tech</small></div>
+        <div class="slab"><div class="stat">+50%<br/>YoY growth</div><small>geospatial SaaS • new markets</small></div>
+        <div class="slab"><div class="stat">1st EU<br/>gov contracts</div><small>industrial B2B • GTM</small></div>
+      </div>
+    </section>
+
+    <!-- Work / Cases -->
+    <section id="work">
+      <div class="kicker">Track Record</div>
+      <h2>Selected Work</h2>
+      <div class="cases">
+        <article class="case">
+          <div>
+            <span class="badge">Pipeline +230%</span>
+            <h4>CEEZER — Demand Engine for Climate Tech</h4>
+            <p>Aligned brand, demand gen, and sales enablement; launched high‑intent content; tightened UTMs & routing; instituted weekly RevOps.</p>
+          </div>
+          <div><strong>Role:</strong> Strategic lead<br/><strong>Time:</strong> 9 months</div>
+        </article>
+        <article class="case">
+          <div>
+            <span class="badge" style="background:#d9f4ff;color:#0b4a63;border-color:#bfe9fb">YoY +50%</span>
+            <h4>UP42 — New Market Entry & ABM</h4>
+            <p>Built ABM motion and partner marketing; improved win rates via product‑led proof and enterprise references.</p>
+          </div>
+          <div><strong>Role:</strong> Marketing lead<br/><strong>Focus:</strong> ABM & partners</div>
+        </article>
+        <article class="case">
+          <div>
+            <span class="badge">First EU Gov Wins</span>
+            <h4>Beta Energy — Industrial B2B GTM</h4>
+            <p>Defined ICPs & value props, rebuilt multilingual site, and established LinkedIn‑led pipeline; improved RFP hit‑rate with case libraries.</p>
+          </div>
+          <div><strong>Role:</strong> Fractional CMO<br/><strong>Focus:</strong> GTM & brand</div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Notes / Philosophy -->
+    <section id="notes">
+      <div class="kicker">Notes</div>
+      <blockquote>Marketing is an operating system, not a department. The job is alignment: story → system → scale.</blockquote>
+      <blockquote>Always talk to sales. They will let you know about the things you don't want to hear about your product.</blockquote>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <div class="kicker">Contact</div>
+      <h2>Let's talk growth</h2>
+      <form onsubmit="event.preventDefault(); alert('Thanks — I\'ll get back to you shortly.'); this.reset();">
+        <input type="text" placeholder="Your name" required />
+        <input type="email" placeholder="Email" required />
+        <input type="text" placeholder="Company (optional)" />
+        <textarea placeholder="How can I help?" required></textarea>
+        <div>
+          <button class="btn btn--fill" type="submit">Send Message</button>
+          <a class="btn btn--ghost" href="mailto:hello@example.com">Email me instead</a>
+        </div>
+      </form>
+    </section>
+  </main>
+
+<script>
+  // Active link highlighting
+  (function(){
+    const links = Array.from(document.querySelectorAll('header nav a'));
+    const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    if(!links.length || !sections.length) return;
+    const setActive = (id) => links.forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + id ? 'true' : 'false'));
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting) setActive(e.target.id); });
+    }, { rootMargin:'-40% 0px -55% 0px', threshold:0.01 });
+    sections.forEach(sec=>io.observe(sec));
+  })();
+</script>
+</body>
+</html>
