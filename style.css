@@ -20,172 +20,108 @@ body{
   line-height:1.5;
 }
 
-/* Contact Form - Mobile First */
-section#contact form{
-  display:grid;
-  gap:12px;
-  grid-template-columns: 1fr; /* Single column on mobile */
-  align-items:start;
-  max-width: 1100px;
-  margin-top: 8px;
-}
-
-/* Medium screens and up - use responsive columns */
-@media (min-width: 640px) {
-  section#contact form{
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  }
-}
-
-section#contact form input,
-section#contact form textarea{
-  padding:14px 16px;
-  border:1px solid var(--line);
-  border-radius:12px;
-  background:#fff;
-  font:inherit;
-  color:var(--ink);
-  width: 100%; /* Ensure full width */
-  min-height: 44px; /* Better touch targets */
-}
-
-section#contact form input{ height:48px; }
-
-section#contact form input::placeholder,
-section#contact form textarea::placeholder{ color: var(--muted); }
-
-section#contact form input:focus,
-section#contact form textarea:focus{
-  outline:none;
-  border-color: var(--accent-2);
-  box-shadow: 0 0 0 3px rgba(14,165,233,.18);
-}
-
-section#contact form textarea{
-  grid-column: 1 / -1;
-  min-height: 140px;
-  resize: vertical; /* Allow vertical resizing only */
-}
-
-section#contact form > div:first-of-type{
-  grid-column: 1 / -1;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:center;
-  justify-content: flex-start; /* Better mobile alignment */
-}
-
-section#contact form .note{ grid-column: 1 / -1; }
-
-/* Header - Mobile Optimized */
-header{
+/* =========================
+   Header (aligned to sections)
+   ========================= */
+.site-header{
   position:sticky;
   top:0;
   z-index:999;
   background:var(--bg);
   border-bottom:1px solid var(--line);
+  padding:12px clamp(20px, 6vw, 96px); /* matches section horizontal padding */
+  min-height:60px;
+}
+.header-row{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:12px 20px; /* Reduced padding for mobile */
-  min-height: 60px;
+  gap:16px;
 }
-
 .brand{font-weight:800;letter-spacing:.02em;font-size:18px;}
-.role{color:var(--muted);font-size:12px;display:none;} /* Hide on mobile */
-
-/* Show role on larger screens */
+.role{color:var(--muted);font-size:12px;display:none;}
 @media (min-width: 640px) {
   .role{display:block;font-size:14px;}
-  header{padding:12px 28px;}
 }
 
-header nav {
+/* Nav: subtle right nudge */
+.site-header nav {
   display:flex;
-  gap:12px; /* Reduced gap for mobile */
+  gap:12px;
   flex-wrap:wrap;
+  margin-left:6px; /* small nudge so it doesn't hug the edge */
 }
-
-header nav a {
+@media (min-width: 640px) {
+  .site-header nav { gap:20px; margin-left:12px; }
+}
+.site-header nav a {
   color:var(--ink);
   text-decoration:none;
   font-weight:700;
-  padding:6px 8px; /* Slightly smaller padding */
+  padding:6px 8px;
   outline:none;
   font-size:14px;
-  min-height:44px; /* Better touch targets */
+  min-height:44px;
   display:flex;
   align-items:center;
 }
-
-/* Larger screens get more spacing */
 @media (min-width: 640px) {
-  header nav {gap:20px;}
-  header nav a {padding:6px 0;font-size:16px;}
+  .site-header nav a { padding:6px 0; font-size:16px; }
 }
+.site-header nav a:hover{color:var(--accent)}
+.site-header nav a:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px;border-radius:6px}
+.site-header nav a[aria-current="true"]{color:#fff;background:var(--ink);border-radius:8px;padding:6px 10px}
 
-header nav a:hover{color:var(--accent)}
-header nav a:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px;border-radius:6px}
-header nav a[aria-current="true"]{color:#fff;background:var(--ink);border-radius:8px;padding:6px 10px}
-
-/* Sections - Responsive Padding */
+/* =========================
+   Sections - Responsive Padding
+   ========================= */
 section{
   border-bottom:1px solid var(--line);
-  padding:40px 20px; /* Reduced padding for mobile */
+  padding:40px clamp(20px, 6vw, 96px); /* aligns with header */
   scroll-margin-top:60px;
 }
-
-/* Larger screens get more padding */
 @media (min-width: 640px) {
-  section{padding:56px 6vw;}
+  section{padding:56px clamp(20px, 6vw, 96px);}
 }
-
 @media (min-width: 1024px) {
-  section{padding:64px 6vw;}
+  section{padding:64px clamp(20px, 6vw, 96px);}
 }
 
 /* Typography */
 .kicker{font-size:16px;text-transform:uppercase;letter-spacing:.18em;color:var(--accent);font-weight:900}
-
 h1{
-  font-size: clamp(32px,8vw,92px); /* Better mobile scaling */
-  line-height:1.05; /* Slightly more line height for readability */
+  font-size: clamp(32px,8vw,92px);
+  line-height:1.05;
   letter-spacing:-.02em;
   margin:10px 0 18px;
 }
-
 .lede{
-  font-size: clamp(16px,4vw,22px); /* Better mobile scaling */
+  font-size: clamp(16px,4vw,22px);
   max-width:72ch;
   color:var(--muted);
-  line-height:1.6; /* Better readability */
+  line-height:1.6;
 }
-
 h2 {
   font-size: clamp(24px,5vw,32px);
   line-height:1.3;
 }
 
-/* CTA Buttons - Mobile First */
+/* CTA Buttons */
 .cta{
   display:flex;
-  flex-direction: column; /* Stack buttons on mobile */
+  flex-direction: column;
   gap:12px;
   margin-top:22px;
 }
-
-/* Side-by-side buttons on larger screens */
 @media (min-width: 480px) {
   .cta{flex-direction: row;flex-wrap:wrap;}
 }
-
 .btn{
   display:inline-flex;
   align-items:center;
   justify-content:center;
   gap:8px;
-  padding:14px 20px; /* Better touch targets */
+  padding:14px 20px;
   border-radius:999px;
   border:1px solid var(--ink);
   text-decoration:none;
@@ -193,27 +129,24 @@ h2 {
   min-height:48px;
   text-align:center;
 }
-
 .btn--fill{background:var(--ink);color:#fff;border-color:var(--ink)}
 .btn--ghost{background:transparent;color:var(--ink)}
 
-/* Capabilities Grid - Mobile First */
+/* =========================
+   Capabilities Grid
+   ========================= */
 .caps {
   display:grid;
-  grid-template-columns: 1fr; /* Single column on mobile */
+  grid-template-columns: 1fr;
   gap:16px;
   margin-top:28px;
 }
-
-/* Two columns on tablets, full grid on desktop */
 @media (min-width: 640px) {
   .caps{grid-template-columns: repeat(2,1fr);gap:18px;}
 }
-
 @media (min-width: 1024px) {
   .caps{grid-template-columns: repeat(4,1fr);}
 }
-
 .cap {
   background:#fff;
   border:1px solid var(--line);
@@ -224,19 +157,18 @@ h2 {
 .cap p { color:var(--muted); font-size:15px;line-height:1.5; }
 .cap strong { color:var(--accent); }
 
-/* Stats Slabs - Mobile First */
+/* =========================
+   Stats Slabs
+   ========================= */
 .slabs {
   display:grid;
-  grid-template-columns: 1fr; /* Single column on mobile */
+  grid-template-columns: 1fr;
   gap:16px;
   margin-top:28px;
 }
-
-/* Multi-column on larger screens */
 @media (min-width: 640px) {
   .slabs{grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));}
 }
-
 .slab {
   background:#101010;
   color:#fafafa;
@@ -244,9 +176,8 @@ h2 {
   padding:24px;
   border:1px solid #000;
   box-shadow:0 6px 18px rgba(0,0,0,.12);
-  text-align:center; /* Center align stats on mobile */
+  text-align:center;
 }
-
 .stat {
   font-size: clamp(24px,6vw,42px);
   font-weight:900;
@@ -254,11 +185,13 @@ h2 {
 }
 .slab small { color:#bdbdbd;display:block;margin-top:8px; }
 
-/* Case Studies - Mobile First */
+/* =========================
+   Case Studies
+   ========================= */
 .cases { display:grid; gap:18px; margin-top:26px; }
 .case {
   display:grid;
-  grid-template-columns: 1fr; /* Single column on mobile */
+  grid-template-columns: 1fr;
   gap:16px;
   align-items:start;
   padding:20px;
@@ -266,12 +199,9 @@ h2 {
   border-radius:12px;
   background:#fff;
 }
-
-/* Two column layout on larger screens */
 @media (min-width: 640px) {
   .case{grid-template-columns: 1fr 220px;gap:18px;padding:18px;}
 }
-
 .case h4 { margin:8px 0 6px;font-size:18px; }
 .case p { color:#6b6b6b; margin:0;line-height:1.5; }
 .badge {
@@ -286,10 +216,8 @@ h2 {
   margin-bottom:8px;
 }
 
-/* Notes */
+/* Notes & Blockquotes */
 .note { color:var(--muted); font-size:14px;line-height:1.6; }
-
-/* Blockquotes - Mobile Optimized */
 blockquote {
   font-size:16px;
   line-height:1.6;
@@ -298,34 +226,31 @@ blockquote {
   font-style:italic;
   color:var(--muted);
 }
-
 @media (min-width: 640px) {
   blockquote{font-size:18px;}
 }
 
-/* Marquee - Mobile Optimized */
+/* =========================
+   Marquee
+   ========================= */
 .marquee {
   overflow:hidden;
   white-space:nowrap;
   border-top:1px solid var(--line);
   border-bottom:1px solid var(--line);
   background:#fff;
-  padding:4px 0; /* Add some vertical padding */
+  padding:4px 0;
 }
-
 .marquee-track {
   display:inline-block;
   padding:8px 0;
-  animation:marquee 35s linear infinite; /* Slower on mobile */
+  animation:marquee 35s linear infinite;
   will-change:transform;
   white-space:nowrap;
 }
-
-/* Faster animation on larger screens */
 @media (min-width: 768px) {
   .marquee-track{animation:marquee 28s linear infinite;padding:10px 0;}
 }
-
 .marquee:hover .marquee-track { animation-play-state:paused; }
 .tag {
   display:inline-flex;
@@ -333,17 +258,14 @@ blockquote {
   padding:6px 12px;
   border:1px solid var(--line);
   border-radius:999px;
-  margin:4px 8px; /* Smaller margins on mobile */
+  margin:4px 8px;
   background:#fff;
   color:var(--ink);
   font-size:13px;
 }
-
-/* Larger tags on bigger screens */
 @media (min-width: 768px) {
   .tag{margin:6px 12px;font-size:14px;}
 }
-
 .dot {
   width:6px;
   height:6px;
@@ -352,17 +274,8 @@ blockquote {
   margin-right:6px;
   flex:0 0 6px;
 }
-
-/* Larger dots on bigger screens */
 @media (min-width: 768px) {
   .dot{width:8px;height:8px;margin-right:8px;flex:0 0 8px;}
-}
-
-/* Mobile-Specific Improvements */
-@media (max-width: 639px) {
-  .kicker{margin-bottom:8px;}
-  h1{margin:8px 0 16px;}
-  h2{margin:8px 0 16px;}
 }
 
 /* Animations */
@@ -374,52 +287,116 @@ blockquote {
   html{ scroll-behavior:auto }
 }
 
-/* Banner container */
+/* =========================
+   Contact Form
+   ========================= */
+section#contact form{
+  display:grid;
+  gap:12px;
+  grid-template-columns: 1fr; /* Single column on mobile */
+  align-items:start;
+  max-width: 1100px;
+  margin-top: 8px;
+}
+@media (min-width: 640px) {
+  section#contact form{
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+section#contact form input,
+section#contact form textarea{
+  padding:14px 16px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  font:inherit;
+  color:var(--ink);
+  width: 100%;
+  min-height: 44px;
+}
+section#contact form input{ height:48px; }
+section#contact form input::placeholder,
+section#contact form textarea::placeholder{ color: var(--muted); }
+section#contact form input:focus,
+section#contact form textarea:focus{
+  outline:none;
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 3px rgba(14,165,233,.18);
+}
+section#contact form textarea{
+  grid-column: 1 / -1;
+  min-height: 140px;
+  resize: vertical;
+}
+section#contact form > div:first-of-type{
+  grid-column: 1 / -1;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content: flex-start;
+}
+section#contact form .note{ grid-column: 1 / -1; }
+
+/* =========================
+   Footer & Cookie Prefs Button
+   ========================= */
+.site-foot{
+  padding:32px clamp(20px, 6vw, 96px);
+  display:flex;
+  justify-content:flex-start; /* aligns with left edge like sections */
+}
+.prefs-link{
+  appearance:none;
+  -webkit-appearance:none;
+  border:1px solid var(--ink);
+  background:#fff;
+  color:var(--ink);
+  padding:10px 14px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:14px;
+  cursor:pointer;
+}
+.prefs-link:hover{ background:var(--ink); color:#fff; }
+.prefs-link:focus-visible{ outline:2px solid var(--accent-2); outline-offset:2px; }
+
+/* =========================
+   TermsFeed Cookie Banner overrides
+   ========================= */
 #termsfeed-com---nb {
   background-color: #f5f2ea !important;
   color: #141414 !important;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial;
-  border-top: 2px solid #e5e0d6; /* optional subtle divider */
-  box-shadow: 0 -2px 12px rgba(0,0,0,0.15);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Helvetica Neue", Arial !important;
+  border-top: 2px solid #e5e0d6 !important;
+  box-shadow: 0 -2px 12px rgba(0,0,0,0.15) !important;
 }
-
-/* Title text */
 #termsfeed-com---nb .cc-nb-title {
   color: #141414 !important;
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
 }
-
-/* Body text */
 #termsfeed-com---nb .cc-nb-text {
-  color: #6b6b6b !important; /* muted text */
-  font-size: 0.95rem;
-  line-height: 1.4;
+  color: #6b6b6b !important;
+  font-size: 0.95rem !important;
+  line-height: 1.4 !important;
 }
-
-/* Buttons */
 #termsfeed-com---nb .cc-nb-buttons-container button {
   border: none !important;
   border-radius: 12px !important;
   padding: 0.6em 1.4em !important;
   font-weight: 600 !important;
-  cursor: pointer;
-  margin: 0 6px;
+  cursor: pointer !important;
+  margin: 0 6px !important;
 }
-
-/* Accept button */
 #termsfeed-com---nb .cc-nb-okagree {
-  background-color: #0ea5e9 !important; /* accent red */
+  background-color: #0ea5e9 !important;
   color: #fff !important;
 }
-
-/* Reject button */
 #termsfeed-com---nb .cc-nb-reject {
-  background-color: #e11d48 !important; /* secondary blue */
+  background-color: #e11d48 !important;
   color: #fff !important;
 }
-
-/* Preferences button */
 #termsfeed-com---nb .cc-nb-changep {
   background-color: transparent !important;
   border: 2px solid #141414 !important;
