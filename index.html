@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>IDEAVA — CMO/VP of Marketing on Demand</title>
-  <meta name="description" content="Editorial, experimental one-pager for executive marketing positioning." />
+  <meta name="description" content="Fractional CMO" />
 
-  <!-- 1) Google Consent Mode: set defaults to DENIED -->
+  <!-- 1) Google Consent Mode: default to DENIED -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){ dataLayer.push(arguments); }
@@ -18,96 +18,39 @@
     });
   </script>
 
-  <!-- 2) TAGGED SCRIPTS (blocked until consent):
-       Use type="text/plain" + data-cookie-consent="[level]"
-       Levels per docs: strictly-necessary | functionality | tracking | targeting
-       Doc: cookieconsent.com “How to tag your JavaScript scripts” -->
-  <!-- Google Tag Manager (blocked until tracking/targeting) -->
-  <script type="text/plain" data-cookie-consent="tracking">
+  <!-- 2) Google Tag Manager (loads but respects Consent Mode) -->
+  <script>
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
       j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-KVNW2HC');
   </script>
-
-  <!-- (Optional) Any other third-party tracking/ads script:
-       <script type="text/plain" data-cookie-consent="targeting">…</script> -->
+  <!-- No <noscript> iframe to avoid bypassing consent -->
 
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- IMPORTANT: Remove GTM noscript iframe to avoid bypassing consent -->
-  <!-- <noscript><iframe ...></iframe></noscript> -->
 
-  <!-- 3) COOKIE CONSENT LOADER (place right after <body> ideally).
-       Use your generated snippet from cookieconsent.com.
-       Add the callbacks below to update Consent Mode when user accepts. -->
-  <script>
-    // Minimal loader for Cookie Consent (replace with your generated embed if provided)
-    (function(){
-      var s = document.createElement('script');
-      s.src = 'https://www.cookieconsent.com/releases/consent.js';
-      s.async = true;
-      s.onload = function(){
-        // Initialize with config
-        cookieconsent.run({
-          // compliance: "gdpr" or "eu" as configured in their builder; defaults are fine
-          notice_banner_type: "headline", // style choice
-          consent_type: "gdpr",           // ensures prior blocking
-          // Your site specifics:
-          website_name: "IDEAVA",
-          // KEY PART: callbacks to update Google Consent Mode once user accepts
-          callbacks_force: true,
-          callbacks: {
-            // Fires when scripts of a specific level are allowed and (re)loaded
-            scripts_specific_loaded: function(level){
-              switch(level){
-                case 'tracking':
-                  // User allowed tracking (analytics)
-                  gtag('consent', 'update', {
-                    'analytics_storage': 'granted'
-                  });
-                  break;
-                case 'targeting':
-                  // User allowed targeting/ads (grant all relevant)
-                  gtag('consent', 'update', {
-                    'ad_storage': 'granted',
-                    'ad_user_data': 'granted',
-                    'ad_personalization': 'granted',
-                    'analytics_storage': 'granted'
-                  });
-                  break;
-              }
-            }
-          }
-        });
-      };
-      document.head.appendChild(s);
-    })();
-  </script>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-row">
+      <div class="id-block">
+        <div class="brand">IDEAVA</div>
+        <div class="role">Fractional CMO / VP of Marketing</div>
+      </div>
+      <nav aria-label="Primary">
+        <a href="#intro" data-link>Intro</a>
+        <a href="#capabilities" data-link>Capabilities</a>
+        <a href="#work" data-link>Work</a>
+        <a href="#notes" data-link>Notes</a>
+        <a href="#contact" data-link>Contact</a>
+      </nav>
+    </div>
+  </header>
 
+  <main class="main">
 
-
-  <!-- Your page content -->
-</body>
-</html>
-
-<header>
-  <div>
-    <div class="brand">IDEAVA</div>
-    <div class="role">Fractional CMO / VP of Marketing</div>
-  </div>
-  <nav aria-label="Primary">
-    <a href="#intro" data-link>Intro</a>
-    <a href="#capabilities" data-link>Capabilities</a>
-    <a href="#work" data-link>Work</a>
-    <a href="#notes" data-link>Notes</a>
-    <a href="#contact" data-link>Contact</a>
-  </nav>
-</header>
-
-<main class="main">
     <!-- Intro / Hero -->
     <section id="intro">
       <div class="kicker">Fractional CMO - VP of Marketing</div>
@@ -149,15 +92,15 @@
       <div class="caps">
         <div class="cap">
           <h3>Revenue Architecture</h3>
-          <p>From <strong>ICP & offer</strong> to channels and SLAs — a demand engine designed to scale, not stall.</p>
+          <p>From <strong>ICP &amp; offer</strong> to channels and SLAs — a demand engine designed to scale, not stall.</p>
         </div>
         <div class="cap">
-          <h3>Positioning & Narrative</h3>
+          <h3>Positioning &amp; Narrative</h3>
           <p>Own the category conversation. Translate product truth into <strong>sales power</strong>.</p>
         </div>
         <div class="cap">
-          <h3>Go‑to‑Market Ops</h3>
-          <p>Attribution, routing, and dashboards that make marketing <strong>undeniably revenue‑driving</strong>.</p>
+          <h3>Go-to-Market Ops</h3>
+          <p>Attribution, routing, and dashboards that make marketing <strong>undeniably revenue-driving</strong>.</p>
         </div>
         <div class="cap">
           <h3>Team Leadership</h3>
@@ -181,30 +124,30 @@
           <div>
             <span class="badge">Pipeline +2300%</span>
             <h4>CEEZER — Demand Engine for Climate Tech</h4>
-            <p>Aligned brand, demand gen, and sales enablement; launched high‑intent PPC & Lead-Gen campaigns; switched from Hubspot to Salesforce, tightened UTMs & routing; instituted weekly RevOps.</p>
+            <p>Aligned brand, demand gen, and sales enablement; launched high-intent PPC &amp; Lead-Gen campaigns; switched from Hubspot to Salesforce, tightened UTMs &amp; routing; instituted weekly RevOps.</p>
           </div>
           <div><strong>Role:</strong> Strategic advisor, PPC Campaigns, Tracking, ABM, and CRM Integration<br/><strong>Time:</strong> 4 months+</div>
         </article>
         <article class="case">
           <div>
             <span class="badge" style="background:#d9f4ff;color:#0b4a63;border-color:#bfe9fb">YoY +150%</span>
-            <h4>UP42 — New Market Entry & ICPs for various use cases, PPC campaigns, Lead-Gen, Content Strategy</h4>
-            <p>Built ABM motion and partner marketing; improved win rates via product‑led proof and enterprise references.</p>
+            <h4>UP42 — New Market Entry &amp; ICPs for various use cases, PPC campaigns, Lead-Gen, Content Strategy</h4>
+            <p>Built ABM motion and partner marketing; improved win rates via product-led proof and enterprise references.</p>
           </div>
-          <div><strong>Role:</strong> Advisor to Marketing Director<br/><strong>Focus:</strong> ABM & partners <br/><strong>Time:</strong> 4 years</div>
+          <div><strong>Role:</strong> Advisor to Marketing Director<br/><strong>Focus:</strong> ABM &amp; partners <br/><strong>Time:</strong> 4 years</div>
         </article>
         <article class="case">
           <div>
             <span class="badge">First EU Gov Wins</span>
             <h4>Beta Energy — Industrial B2B GTM</h4>
-            <p>Defined ICPs & value props, rebuilt multilingual site, and established LinkedIn‑led pipeline; improved RFP hit‑rate with case libraries.</p>
+            <p>Defined ICPs &amp; value props, rebuilt multilingual site, and established LinkedIn-led pipeline; improved RFP hit-rate with case libraries.</p>
           </div>
-          <div><strong>Role:</strong> Fractional CMO<br/><strong>Focus:</strong> GTM & brand</div>
+          <div><strong>Role:</strong> Fractional CMO<br/><strong>Focus:</strong> GTM &amp; brand</div>
         </article>
       </div>
     </section>
 
-    <!-- Notes / Philosophy -->
+    <!-- Notes -->
     <section id="notes">
       <div class="kicker">Notes</div>
       <blockquote>Marketing is an operating system, not a department. The job is alignment: story → system → scale.</blockquote>
@@ -213,76 +156,83 @@
 
     <!-- Contact -->
     <section id="contact">
-  <div class="kicker">Contact</div>
-  <h2>Let's talk growth</h2>
+      <div class="kicker">Contact</div>
+      <h2>Let's talk growth</h2>
 
-  <form id="contact-form" action="https://formspree.io/f/xanbzjzp" method="POST">
-    <input type="text" name="name" placeholder="Your name" required />
-    <input type="email" name="email" placeholder="Email" required />
-    <input type="text" name="company" placeholder="Company (optional)" />
-    <textarea name="message" placeholder="How can I help?" required></textarea>
+      <form id="contact-form" action="https://formspree.io/f/xanbzjzp" method="POST">
+        <input type="text" name="name" placeholder="Your name" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="text" name="company" placeholder="Company (optional)" />
+        <textarea name="message" placeholder="How can I help?" required></textarea>
 
-    <!-- Optional hidden subject + honeypot -->
-    <input type="hidden" name="_subject" value="New message from IDEAVA contact form" />
-    <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+        <!-- Optional hidden subject + honeypot -->
+        <input type="hidden" name="_subject" value="New message from IDEAVA contact form" />
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
 
-    <div>
-      <button class="btn btn--fill" type="submit">Send Message</button>
-      <a class="btn btn--ghost" href="mailto:info@ideava.com">Email me instead</a>
-    </div>
+        <div>
+          <button class="btn btn--fill" type="submit">Send Message</button>
+          <a class="btn btn--ghost" href="mailto:info@ideava.com">Email me instead</a>
+        </div>
 
-    <!-- Status message -->
-    <p id="form-status" style="margin-top:10px;"></p>
-  </form>
-</section>
+        <!-- Status message -->
+        <p id="form-status" style="margin-top:10px;"></p>
+      </form>
+    </section>
 
-<script>
-  const form = document.getElementById("contact-form");
-  const statusEl = document.getElementById("form-status");
-
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    const data = new FormData(form);
-    statusEl.textContent = "Sending…";
-
-    try {
-      const response = await fetch(form.action, {
-        method: form.method,
-        body: data,
-        headers: { 'Accept': 'application/json' }
-      });
-
-      if (response.ok) {
-        statusEl.textContent = "✅ Thanks — we'll get back to you shortly.";
-        form.reset();
-      } else {
-        statusEl.textContent = "⚠️ Oops, something went wrong. Please try again.";
-      }
-    } catch (error) {
-      statusEl.textContent = "⚠️ Network error. Please check your connection and try again.";
-    }
-  });
-</script>
-
-    <p><a href="#" id="open_preferences_center">Update cookies preferences</a></p>
+    <!-- Cookie Preferences Button (consistent alignment & style) -->
+    <footer class="site-foot">
+      <button id="open_preferences_center" type="button" class="prefs-link">
+        Cookie settings
+      </button>
+    </footer>
 
   </main>
 
-<script>
-  // Active link highlighting
-  (function(){
-    const links = Array.from(document.querySelectorAll('header nav a'));
-    const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-    if(!links.length || !sections.length) return;
-    const setActive = (id) => links.forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + id ? 'true' : 'false'));
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting) setActive(e.target.id); });
-    }, { rootMargin:'-40% 0px -55% 0px', threshold:0.01 });
-    sections.forEach(sec=>io.observe(sec));
-  })();
-</script>
-<!-- 3) TermsFeed Cookie Consent -->
+  <!-- Contact form handler -->
+  <script>
+    const form = document.getElementById("contact-form");
+    const statusEl = document.getElementById("form-status");
+
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const data = new FormData(form);
+      statusEl.textContent = "Sending…";
+
+      try {
+        const response = await fetch(form.action, {
+          method: form.method,
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (response.ok) {
+          statusEl.textContent = "✅ Thanks — we'll get back to you shortly.";
+          form.reset();
+        } else {
+          statusEl.textContent = "⚠️ Oops, something went wrong. Please try again.";
+        }
+      } catch (error) {
+        statusEl.textContent = "⚠️ Network error. Please check your connection and try again.";
+      }
+    });
+  </script>
+
+  <!-- Active link highlighting -->
+  <script>
+    (function(){
+      const links = Array.from(document.querySelectorAll('header nav a'));
+      const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+      if(!links.length || !sections.length) return;
+      const setActive = (id) => links.forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + id ? 'true' : 'false'));
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{ if(e.isIntersecting) setActive(e.target.id); });
+      }, { rootMargin:'-40% 0px -55% 0px', threshold:0.01 });
+      sections.forEach(sec=>io.observe(sec));
+    })();
+  </script>
+
+  <!-- TermsFeed Cookie Consent -->
   <script src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js" charset="UTF-8"></script>
   <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -299,7 +249,7 @@
       website_privacy_policy_url: "https://www.ideava.com/privacy-policy",
       callbacks: {
         onConsent: function(cookie){
-          // User accepted cookies
+          // Grant after consent
           gtag('consent', 'update', {
             'ad_storage': 'granted',
             'ad_user_data': 'granted',
@@ -308,7 +258,7 @@
           });
         },
         onChange: function(cookie){
-          // Re-check categories on change
+          // Adjust categories on change
           if(cookie.categories.includes("tracking")){
             gtag('consent', 'update', { 'analytics_storage': 'granted' });
           }
