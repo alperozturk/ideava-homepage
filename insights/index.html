@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insights | IDEAVA - Marketing Strategy & Leadership</title>
+    <meta name="description" content="Expert insights on marketing strategy, fractional CMO leadership, and growth tactics for startups and scale-ups.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Insights | IDEAVA">
+    <meta property="og:description" content="Expert insights on marketing strategy, fractional CMO leadership, and growth tactics.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ideava.de/insights/">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/blog.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="logo">IDEAVA</a>
+            <ul class="nav-links">
+                <li><a href="/#services">Services</a></li>
+                <li><a href="/#about">About</a></li>
+                <li><a href="/insights/" class="active">Insights</a></li>
+                <li><a href="/#contact" class="btn btn-primary">Get in Touch</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <h1>Insights</h1>
+            <p class="page-subtitle">Strategic perspectives on marketing leadership, growth tactics, and building high-performance marketing organizations.</p>
+        </div>
+    </header>
+
+    <!-- Posts Grid -->
+    <section class="insights-listing">
+        <div class="container">
+            <div class="posts-grid">
+                <!-- POST_CARDS_START -->
+                <article class="post-card">
+                    <a href="/insights/when-to-hire-fractional-cmo/">
+                        <img src="/images/fractional-cmo-leadership-gap.jpg" alt="When to Hire a Fractional CMO" class="post-card-image">
+                        <div class="post-card-content">
+                            <span class="post-card-category">Marketing Leadership</span>
+                            <h2 class="post-card-title">When to Hire a Fractional CMO: The Leadership Gap Test</h2>
+                            <p class="post-card-excerpt">Most companies hire marketing leadership too late—or waste money hiring too early. Here's how to know when you're actually ready.</p>
+                            <div class="post-card-meta">
+                                <time datetime="2025-01-21">January 21, 2025</time>
+                                <span class="meta-separator">•</span>
+                                <span>7 min read</span>
+                            </div>
+                        </div>
+                    </a>
+                </article>
+                <!-- POST_CARDS_END -->
+
+                <!-- Placeholder for empty state -->
+                <div class="empty-state" id="empty-state">
+                    <p>New insights coming soon. Check back for expert marketing perspectives.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter CTA -->
+    <section class="newsletter-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Stay Ahead of the Curve</h2>
+                <p>Get monthly insights on marketing strategy and leadership delivered to your inbox.</p>
+                <a href="/#contact" class="btn btn-primary">Subscribe to Updates</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="/" class="logo">IDEAVA</a>
+                    <p>Strategic marketing leadership for growing companies.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/#services">Services</a></li>
+                        <li><a href="/#about">About</a></li>
+                        <li><a href="/insights/">Insights</a></li>
+                        <li><a href="/#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="https://linkedin.com/company/ideava" target="_blank" rel="noopener">LinkedIn</a></li>
+                        <li><a href="mailto:hello@ideava.de">hello@ideava.de</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 IDEAVA. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="/privacy/">Privacy Policy</a>
+                    <a href="/imprint/">Imprint</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Mobile menu toggle
+        var menuToggle = document.querySelector('.mobile-menu-toggle');
+        if (menuToggle) {
+            menuToggle.addEventListener('click', function() {
+                document.querySelector('.nav-links').classList.toggle('active');
+                this.classList.toggle('active');
+            });
+        }
+
+        // Hide empty state if posts exist
+        var postCards = document.querySelectorAll('.post-card');
+        var emptyState = document.getElementById('empty-state');
+        if (postCards.length > 0 && emptyState) {
+            emptyState.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
