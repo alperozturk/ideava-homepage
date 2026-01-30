@@ -22,23 +22,23 @@
     <link rel="stylesheet" href="../blog.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="/" class="logo">IDEAVA</a>
-            <ul class="nav-links">
-                <li><a href="/#services">Services</a></li>
-                <li><a href="/#about">About</a></li>
-                <li><a href="/insights/" class="active">Insights</a></li>
-                <li><a href="/#contact" class="btn btn-primary">Get in Touch</a></li>
-            </ul>
-            <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-row">
+            <div class="id-block">
+                <div class="brand"><a href="/">IDEAVA</a></div>
+                <div class="role">Fractional CMO / VP of Marketing</div>
+            </div>
+            <nav aria-label="Primary">
+                <a href="/#intro" data-link>Intro</a>
+                <a href="/#capabilities" data-link>Capabilities</a>
+                <a href="/#work" data-link>Work</a>
+                <a href="/insights/" aria-current="page">Insights</a>
+                <a href="/#notes" data-link>Notes</a>
+                <a href="/#contact" data-link>Contact</a>
+            </nav>
         </div>
-    </nav>
+    </header>
 
     <!-- Page Header -->
     <header class="page-header">
@@ -125,15 +125,6 @@
 
     <!-- Scripts -->
     <script>
-        // Mobile menu toggle
-        var menuToggle = document.querySelector('.mobile-menu-toggle');
-        if (menuToggle) {
-            menuToggle.addEventListener('click', function() {
-                document.querySelector('.nav-links').classList.toggle('active');
-                this.classList.toggle('active');
-            });
-        }
-
         // Hide empty state if posts exist
         var postCards = document.querySelectorAll('.post-card');
         var emptyState = document.getElementById('empty-state');

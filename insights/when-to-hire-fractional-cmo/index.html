@@ -27,23 +27,23 @@
     <link rel="stylesheet" href="../../blog.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="https://ideava.com/" class="logo">IDEAVA</a>
-            <ul class="nav-links">
-                <li><a href="https://ideava.com/#services">Services</a></li>
-                <li><a href="https://ideava.com/#about">About</a></li>
-                <li><a href="https://ideava.com/insights/">Insights</a></li>
-                <li><a href="https://ideava.com/#contact" class="btn btn-primary">Get in Touch</a></li>
-            </ul>
-            <button class="mobile-menu-toggle" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-row">
+            <div class="id-block">
+                <div class="brand"><a href="/">IDEAVA</a></div>
+                <div class="role">Fractional CMO / VP of Marketing</div>
+            </div>
+            <nav aria-label="Primary">
+                <a href="/#intro" data-link>Intro</a>
+                <a href="/#capabilities" data-link>Capabilities</a>
+                <a href="/#work" data-link>Work</a>
+                <a href="/insights/" aria-current="page">Insights</a>
+                <a href="/#notes" data-link>Notes</a>
+                <a href="/#contact" data-link>Contact</a>
+            </nav>
         </div>
-    </nav>
+    </header>
 
     <!-- Breadcrumb -->
     <div class="breadcrumb">
@@ -282,15 +282,6 @@
                 }, 2000);
             });
         });
-
-        // Mobile menu toggle
-        var menuToggle = document.querySelector('.mobile-menu-toggle');
-        if (menuToggle) {
-            menuToggle.addEventListener('click', function() {
-                document.querySelector('.nav-links').classList.toggle('active');
-                this.classList.toggle('active');
-            });
-        }
     </script>
 </body>
 </html>
