@@ -1,0 +1,8 @@
+# robots.txt for ideava.com
+# Fractional CMO & Marketing Leadership Services
+
+User-agent: *
+Allow: /
+
+# Reference sitemap for better indexing
+Sitemap: https://ideava.com/sitemap.xml
