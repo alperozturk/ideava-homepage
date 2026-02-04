@@ -133,6 +133,148 @@ h2 {
 .btn--ghost{background:transparent;color:var(--ink)}
 
 /* =========================
+   Latest Insights Carousel
+   ========================= */
+.insights-carousel-section {
+  overflow: hidden;
+}
+.insights-header {
+  margin-bottom: 28px;
+}
+.insights-header h2 {
+  margin: 8px 0 0;
+}
+
+.insights-track {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+@media (min-width: 640px) {
+  .insights-track {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .insights-track {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.insight-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--rad);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  min-height: 240px;
+  position: relative;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.insight-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+}
+.insight-category {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.insight-card h3 {
+  font-size: 20px;
+  line-height: 1.3;
+  margin: 0 0 12px;
+  color: var(--ink);
+}
+@media (min-width: 640px) {
+  .insight-card h3 {
+    font-size: 22px;
+  }
+}
+.insight-card p {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--muted);
+  margin: 0 0 auto;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.insight-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.insight-link {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 24px;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  gap: 6px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.insight-link span,
+.insight-link svg {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  background: var(--ink);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.insight-link svg {
+  position: static;
+  padding: 0;
+  background: none;
+}
+.insight-card:hover .insight-link {
+  opacity: 1;
+}
+
+.insights-view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 10px 0;
+  transition: color 0.2s ease;
+}
+.insights-view-all:hover {
+  color: var(--accent);
+}
+.insights-view-all svg {
+  transition: transform 0.2s ease;
+}
+.insights-view-all:hover svg {
+  transform: translateX(4px);
+}
+
+/* =========================
    Capabilities Grid
    ========================= */
 .caps {
