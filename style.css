@@ -38,7 +38,8 @@ body{
   align-items:center;
   gap:16px;
 }
-.brand{font-weight:800;letter-spacing:.02em;font-size:18px;}
+.brand{font-weight:800;letter-spacing:.02em;font-size:18px;color:var(--ink);text-decoration:none;}
+.brand:visited,.brand:hover,.brand:focus,.brand:active{color:var(--ink);text-decoration:none;}
 .role{color:var(--muted);font-size:12px;display:none;}
 @media (min-width: 640px) {
   .role{display:block;font-size:14px;}
@@ -205,23 +206,26 @@ h2 {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.insight-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
 .insight-meta {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 13px;
   color: var(--muted);
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid var(--line);
 }
 .insight-link {
-  position: absolute;
-  inset: 0;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 24px;
   color: var(--ink);
   text-decoration: none;
   font-weight: 700;
@@ -231,9 +235,6 @@ h2 {
   transition: opacity 0.2s ease;
 }
 .insight-link-pill {
-  position: absolute;
-  bottom: 24px;
-  right: 24px;
   background: var(--ink);
   color: #fff;
   padding: 8px 14px;
