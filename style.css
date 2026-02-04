@@ -343,8 +343,34 @@ section#contact form .note{ grid-column: 1 / -1; }
    ========================= */
 .site-foot{
   padding:32px clamp(20px, 6vw, 96px);
+  border-top:1px solid var(--line);
+}
+.foot-row{
   display:flex;
-  justify-content:flex-start; /* aligns with left edge like sections */
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:16px;
+  margin-bottom:16px;
+}
+.foot-legal{
+  display:flex;
+  gap:20px;
+}
+.foot-legal a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:14px;
+  font-weight:500;
+  transition:color 0.2s ease;
+}
+.foot-legal a:hover{
+  color:var(--ink);
+}
+.foot-copy{
+  color:var(--muted);
+  font-size:13px;
+  margin:0;
 }
 .prefs-link{
   appearance:none;
