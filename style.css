@@ -473,6 +473,22 @@ section#contact form > div:first-of-type{
   justify-content: flex-start;
 }
 section#contact form .note{ grid-column: 1 / -1; }
+.consent-check{
+  grid-column: 1 / -1;
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.4;
+  cursor:pointer;
+}
+.consent-check input[type="checkbox"]{
+  margin-top:3px;
+  flex-shrink:0;
+  accent-color:var(--accent-2);
+}
+.consent-check a{ color:var(--accent-2); text-decoration:underline; }
 
 /* =========================
    Footer & Cookie Prefs Button

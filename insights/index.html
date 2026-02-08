@@ -12,10 +12,26 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ideava.com/insights/">
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Consent Mode: default to DENIED -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
+      gtag('consent', 'default', {
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'analytics_storage': 'denied'
+      });
+    </script>
+
+    <!-- Google Tag Manager (loads but respects Consent Mode) -->
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-KVNW2HC');
+    </script>
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -234,5 +250,55 @@
             emptyState.style.display = 'none';
         }
     </script>
+    <!-- TermsFeed Cookie Consent -->
+    <script src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js" charset="UTF-8"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      cookieconsent.run({
+        notice_banner_type: "standalone",
+        consent_type: "express",
+        palette: "dark",
+        language: "en",
+        page_load_consent_levels: ["strictly-necessary"],
+        notice_banner_reject_button_hide: false,
+        preferences_center_close_button_hide: false,
+        page_refresh_confirmation_buttons: false,
+        website_name: "IDEAVA",
+        website_privacy_policy_url: "https://www.ideava.com/privacy-policy"
+      });
+    });
+    </script>
+
+    <!-- Consent sync: polls cookie and fires gtag update -->
+    <script>
+    (function() {
+      var synced = false;
+      var check = setInterval(function() {
+        if (synced) { clearInterval(check); return; }
+        try {
+          var match = document.cookie.match(/cookie_consent_level=([^;]+)/);
+          if (!match) return;
+          var levels = JSON.parse(decodeURIComponent(match[1]));
+          if (levels.tracking) {
+            gtag('consent', 'update', { 'analytics_storage': 'granted' });
+            synced = true;
+          }
+          if (levels.targeting) {
+            gtag('consent', 'update', {
+              'ad_storage': 'granted',
+              'ad_user_data': 'granted',
+              'ad_personalization': 'granted'
+            });
+          }
+        } catch(e) {}
+      }, 500);
+      setTimeout(function() { clearInterval(check); }, 60000);
+    })();
+    </script>
+
+    <noscript>
+      Free cookie consent management tool by
+      <a href="https://www.termsfeed.com/">TermsFeed</a>
+    </noscript>
 </body>
 </html>
