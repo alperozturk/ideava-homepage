@@ -357,52 +357,51 @@
     })();
   </script>
 
-  <!-- TermsFeed Cookie Consent -->
+ <!-- TermsFeed Cookie Consent -->
   <script src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js" charset="UTF-8"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-
-  // Helper: read cookie and fire consent update
-  function syncConsentFromCookie() {
-    try {
-      var match = document.cookie.match(/cookie_consent_level=([^;]+)/);
-      if (!match) return;
-      var levels = JSON.parse(decodeURIComponent(match[1]));
-      if (levels.tracking) {
-        gtag('consent', 'update', { 'analytics_storage': 'granted' });
-      }
-      if (levels.targeting) {
-        gtag('consent', 'update', {
-          'ad_storage': 'granted',
-          'ad_user_data': 'granted',
-          'ad_personalization': 'granted'
-        });
-      }
-    } catch(e) { console.warn('Consent sync error:', e); }
-  }
-
-  cookieconsent.run({
-    notice_banner_type: "standalone",
-    consent_type: "express",
-    palette: "dark",
-    language: "en",
-    page_load_consent_levels: ["strictly-necessary"],
-    notice_banner_reject_button_hide: false,
-    preferences_center_close_button_hide: false,
-    page_refresh_confirmation_buttons: false,
-    website_name: "IDEAVA",
-    website_privacy_policy_url: "https://www.ideava.com/privacy-policy",
-    callbacks: {
-      onConsent: function() {
-        syncConsentFromCookie();
-      },
-      onChange: function() {
-        syncConsentFromCookie();
-      }
-    }
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    cookieconsent.run({
+      notice_banner_type: "standalone",
+      consent_type: "express",
+      palette: "dark",
+      language: "en",
+      page_load_consent_levels: ["strictly-necessary"],
+      notice_banner_reject_button_hide: false,
+      preferences_center_close_button_hide: false,
+      page_refresh_confirmation_buttons: false,
+      website_name: "IDEAVA",
+      website_privacy_policy_url: "https://www.ideava.com/privacy-policy"
+    });
   });
-});
-</script>
+  </script>
+
+  <!-- Consent sync: polls cookie and fires gtag update -->
+  <script>
+  (function() {
+    var synced = false;
+    var check = setInterval(function() {
+      if (synced) { clearInterval(check); return; }
+      try {
+        var match = document.cookie.match(/cookie_consent_level=([^;]+)/);
+        if (!match) return;
+        var levels = JSON.parse(decodeURIComponent(match[1]));
+        if (levels.tracking) {
+          gtag('consent', 'update', { 'analytics_storage': 'granted' });
+          synced = true;
+        }
+        if (levels.targeting) {
+          gtag('consent', 'update', {
+            'ad_storage': 'granted',
+            'ad_user_data': 'granted',
+            'ad_personalization': 'granted'
+          });
+        }
+      } catch(e) {}
+    }, 500);
+    setTimeout(function() { clearInterval(check); }, 60000);
+  })();
+  </script>
 
   <noscript>
     Free cookie consent management tool by
