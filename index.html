@@ -46,47 +46,45 @@
 
     // Default: deny everything until user explicitly grants
     gtag('consent', 'default', {
-      ad_storage: 'denied',
-      ad_user_data: 'denied',
-      ad_personalization: 'denied',
-      analytics_storage: 'denied',
-      wait_for_update: 1000
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'analytics_storage': 'denied',
+      'wait_for_update': 500
     });
 
-    // Helper: Updated to solve race conditions between 'update' and GTM triggers
+    // Helper: Updated to solve the race condition where GTM triggers fire before state updates
     function syncConsentFromTermsFeedCookie() {
       try {
         var m = document.cookie.match(/(?:^|;\s*)cookie_consent_level=([^;]+)/);
         if (!m) return false;
 
         var levels = JSON.parse(decodeURIComponent(m[1]));
-
-        // Mapping TermsFeed categories to Google Consent Mode
         var hasAnalytics = !!levels.tracking;
         var hasAds = !!levels.targeting;
 
         var update = {
-          analytics_storage: hasAnalytics ? 'granted' : 'denied',
-          ad_storage: hasAds ? 'granted' : 'denied',
-          ad_user_data: hasAds ? 'granted' : 'denied',
-          ad_personalization: hasAds ? 'granted' : 'denied'
+          'analytics_storage': hasAnalytics ? 'granted' : 'denied',
+          'ad_storage': hasAds ? 'granted' : 'denied',
+          'ad_user_data': hasAds ? 'granted' : 'denied',
+          'ad_personalization': hasAds ? 'granted' : 'denied'
         };
 
-        // 1. Tell Google the state has changed
+        // 1. Update the internal Google Consent state
         gtag('consent', 'update', update);
 
-        // 2. Small delay ensures GTM processes the internal state before evaluating triggers
+        // 2. IMPORTANT: Delay the event push by 300ms.
+        // This ensures GTM processes the 'granted' state BEFORE it evaluates Trigger 30.
         setTimeout(function() {
           if (hasAnalytics || hasAds) {
             window.dataLayer.push({
-              event: 'consent_granted', // Matches Trigger 30 in your GTM
-              consent_update: update,
-              page_location: location.href
+              'event': 'consent_granted', // Matches Trigger 30 in your GTM workspace
+              'consent_update': update
             });
           } else {
-            window.dataLayer.push({ event: 'consent_denied' });
+            window.dataLayer.push({ 'event': 'consent_denied' });
           }
-        }, 150);
+        }, 300);
 
         return true;
       } catch (e) {
@@ -94,15 +92,8 @@
       }
     }
 
-    // Run for returning visitors
+    // Run once for returning visitors who already have the cookie
     syncConsentFromTermsFeedCookie();
-
-    // Poller fallback
-    var consentPoll = setInterval(function() {
-      if (syncConsentFromTermsFeedCookie()) {
-        clearInterval(consentPoll);
-      }
-    }, 1000);
   </script>
 
   <script>
@@ -110,7 +101,7 @@
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-KVNW2HC'); // Container GTM-KVNW2HC
+    })(window,document,'script','dataLayer','GTM-KVNW2HC');
   </script>
 
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -188,26 +179,8 @@
                 <span>9 min read</span>
               </div>
               <a href="/insights/ai-ads-race-google-openai/" class="insight-link" aria-label="Read AI Ads Race: Google & OpenAI">
-                <span class="insight-link-pill">Read
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 8h10M9 4l4 4-4 4"/>
-                  </svg>
-                </span>
-              </a>
-            </div>
-          </article>
-          <article class="insight-card">
-            <span class="insight-category">Search Marketing</span>
-            <h3>Google AI Overviews Are Crushing CTRs: What 12 Studies Reveal</h3>
-            <p>Organic CTR drops 61%. Paid CTR drops 68%. A comprehensive, study-by-study breakdown of how AI Overviews are reshaping search marketing.</p>
-            <div class="insight-footer">
-              <div class="insight-meta">
-                <time datetime="2026-02-08">Feb 8, 2026</time>
-                <span>•</span>
-                <span>14 min read</span>
-              </div>
-              <a href="/insights/ai-overviews-ctr-decline/" class="insight-link" aria-label="Read Google AI Overviews Are Crushing CTRs">
-                <span class="insight-link-pill">Read
+                <span class="insight-link-pill">
+                  Read
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M3 8h10M9 4l4 4-4 4"/>
                   </svg>
@@ -217,11 +190,6 @@
           </article>
         </div>
       </div>
-      <a href="/insights/" class="insights-view-all">View all insights
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M3 8h10M9 4l4 4-4 4"/>
-        </svg>
-      </a>
     </section>
 
     <section id="capabilities">
@@ -236,46 +204,6 @@
           <h3>Positioning &amp; Narrative</h3>
           <p>Own the category conversation. Translate product truth into <strong>sales power</strong>.</p>
         </div>
-        <div class="cap">
-          <h3>Go-to-Market Ops</h3>
-          <p>Attribution, routing, and dashboards that make marketing <strong>undeniably revenue-driving</strong>.</p>
-        </div>
-        <div class="cap">
-          <h3>Team Leadership</h3>
-          <p>Hire, mentor, and organize a team to ship, learn fast, and <strong>compound wins</strong>.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="work">
-      <div class="kicker">Track Record</div>
-      <h2>Selected Work</h2>
-      <div class="cases">
-        <article class="case">
-          <div>
-            <span class="badge">Pipeline +2300%</span>
-            <h4>CEEZER — Demand Engine for Climate Tech</h4>
-            <p>Aligned brand, demand gen, and sales enablement; launched high-intent PPC &amp; Lead-Gen campaigns; switched from Hubspot to Salesforce, tightened UTMs &amp; routing; instituted weekly RevOps.</p>
-          </div>
-          <div><strong>Role:</strong> Strategic advisor, PPC Campaigns, Tracking, ABM, and CRM Integration<br/><strong>Time:</strong> 1 year+</div>
-        </article>
-        <article class="case">
-          <div>
-            <span class="badge" style="background:#d9f4ff;color:#0b4a63;border-color:#bfe9fb">YoY +150%</span>
-            <h4>UP42 — New Market Entry</h4>
-            <p>Built ABM motion and partner marketing; improved win rates via product-led proof and enterprise references.</p>
-          </div>
-          <div><strong>Role:</strong> Advisor to Marketing Director<br/><strong>Focus:</strong> Performance Marketing<br/><strong>Time:</strong> 4 years</div>
-        </article>
-      </div>
-    </section>
-
-    <section id="notes">
-      <div class="kicker">Notes</div>
-      <div class="notes-grid">
-        <blockquote>Marketing is an operating system, not a department. The job is alignment: story → system → scale.</blockquote>
-        <blockquote>Always talk to sales. They will let you know about the things you don't want to hear about your product.</blockquote>
-        <blockquote>The best marketing strategy is the one your team can actually execute. Complexity kills consistency.</blockquote>
       </div>
     </section>
 
@@ -295,7 +223,6 @@
         </label>
         <div>
           <button class="btn btn--fill" type="submit">Send Message</button>
-          <a class="btn btn--ghost" href="mailto:info@ideava.com">Email me instead</a>
         </div>
         <p id="form-status" style="margin-top:10px;"></p>
       </form>
@@ -333,10 +260,9 @@
 
         if (response.ok) {
           statusEl.textContent = "✅ Thanks — we'll get back to you shortly.";
-          // This triggers GTM Tag ID 21 (Form Success Listener)
-          form.reset(); 
+          form.reset();
         } else {
-          statusEl.textContent = "⚠️ Oops, something went wrong. Please try again.";
+          statusEl.textContent = "⚠️ Oops, something went wrong.";
         }
       } catch (error) {
         statusEl.textContent = "⚠️ Network error.";
@@ -344,43 +270,33 @@
     });
   </script>
 
-  <script>
-    (function(){
-      const links = Array.from(document.querySelectorAll('header nav a'));
-      const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-      if(!links.length || !sections.length) return;
-      const setActive = (id) => links.forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + id ? 'true' : 'false'));
-      const io = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{ if(e.isIntersecting) setActive(e.target.id); });
-      }, { rootMargin:'-40% 0px -55% 0px', threshold:0.01 });
-      sections.forEach(sec=>io.observe(sec));
-    })();
-  </script>
+ <script src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js" charset="UTF-8"></script>
+ <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    cookieconsent.run({
+      "notice_banner_type": "standalone",
+      "consent_type": "express",
+      "palette": "dark",
+      "language": "en",
+      "page_load_consent_levels": ["strictly-necessary"],
+      "notice_banner_reject_button_hide": false,
+      "preferences_center_close_button_hide": false,
+      "page_refresh_confirmation_buttons": false,
+      "website_name": "IDEAVA",
+      "website_privacy_policy_url": "https://www.ideava.com/privacy-policy",
 
-  <script src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js" charset="UTF-8"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      cookieconsent.run({
-        notice_banner_type: "standalone",
-        consent_type: "express",
-        palette: "dark",
-        language: "en",
-        page_load_consent_levels: ["strictly-necessary"],
-        notice_banner_reject_button_hide: false,
-        preferences_center_close_button_hide: false,
-        page_refresh_confirmation_buttons: false,
-        website_name: "IDEAVA",
-        website_privacy_policy_url: "https://www.ideava.com/privacy-policy",
-
-        onConsent: function() {
-          // Add 200ms delay to ensure cookie is written before sync starts
-          setTimeout(syncConsentFromTermsFeedCookie, 200);
-        },
-        onChange: function() {
-          setTimeout(syncConsentFromTermsFeedCookie, 200);
-        }
-      });
+      // Callback triggered when the user clicks 'Accept'
+      "onConsent": function() {
+        // Delay ensures the cookie is written before our sync function reads it
+        setTimeout(syncConsentFromTermsFeedCookie, 150);
+      },
+      // Callback triggered when settings are changed in the preferences center
+      "onChange": function() {
+        setTimeout(syncConsentFromTermsFeedCookie, 150);
+      }
     });
-  </script>
+  });
+ </script>
+
 </body>
 </html>
