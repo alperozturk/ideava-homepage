@@ -39,6 +39,40 @@
       })(window,document,'script','dataLayer','GTM-KVNW2HC');
     </script>
 
+    <!-- Consent sync: immediate check + polling for returning/new visitors -->
+    <script>
+    (function() {
+      var synced = false;
+      function syncConsent() {
+        if (synced) return;
+        try {
+          var match = document.cookie.match(/cookie_consent_level=([^;]+)/);
+          if (!match) return;
+          var levels = JSON.parse(decodeURIComponent(match[1]));
+          if (levels.tracking || levels.targeting) {
+            var update = {};
+            if (levels.tracking)  update.analytics_storage = 'granted';
+            if (levels.targeting) {
+              update.ad_storage = 'granted';
+              update.ad_user_data = 'granted';
+              update.ad_personalization = 'granted';
+            }
+            gtag('consent', 'update', update);
+            synced = true;
+          }
+        } catch(e) {}
+      }
+      syncConsent();
+      if (!synced) {
+        var check = setInterval(function() {
+          syncConsent();
+          if (synced) clearInterval(check);
+        }, 500);
+        setTimeout(function() { clearInterval(check); }, 60000);
+      }
+    })();
+    </script>
+
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -485,33 +519,6 @@
         website_privacy_policy_url: "https://www.ideava.com/privacy-policy"
       });
     });
-    </script>
-
-    <!-- Consent sync: polls cookie and fires gtag update -->
-    <script>
-    (function() {
-      var synced = false;
-      var check = setInterval(function() {
-        if (synced) { clearInterval(check); return; }
-        try {
-          var match = document.cookie.match(/cookie_consent_level=([^;]+)/);
-          if (!match) return;
-          var levels = JSON.parse(decodeURIComponent(match[1]));
-          if (levels.tracking || levels.targeting) {
-            var update = {};
-            if (levels.tracking)  update.analytics_storage = 'granted';
-            if (levels.targeting) {
-              update.ad_storage = 'granted';
-              update.ad_user_data = 'granted';
-              update.ad_personalization = 'granted';
-            }
-            gtag('consent', 'update', update);
-            synced = true;
-          }
-        } catch(e) {}
-      }, 500);
-      setTimeout(function() { clearInterval(check); }, 60000);
-    })();
     </script>
 
     <noscript>

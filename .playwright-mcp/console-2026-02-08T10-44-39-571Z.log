@@ -1,0 +1,10 @@
+[     213ms] SyntaxError: Failed to execute 'querySelector' on 'Document': '/insights/' is not a valid selector.
+    at http://localhost:8765/index.html:355:48
+    at Array.map (<anonymous>)
+    at http://localhost:8765/index.html:355:30
+    at http://localhost:8765/index.html:362:7
+[   11397ms] SyntaxError: Failed to execute 'querySelector' on 'Document': '/insights/' is not a valid selector.
+    at http://localhost:8765/index.html:355:48
+    at Array.map (<anonymous>)
+    at http://localhost:8765/index.html:355:30
+    at http://localhost:8765/index.html:362:7
