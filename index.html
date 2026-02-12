@@ -54,17 +54,7 @@
     });
   </script>
 
-  <!-- 2) Google Tag Manager (loads but respects Consent Mode) -->
-  <script>
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-KVNW2HC');
-  </script>
-  <!-- No <noscript> iframe to avoid bypassing consent -->
-
-  <!-- Consent sync: immediate check + polling for returning/new visitors -->
+  <!-- 2) Consent sync: immediate check + polling for returning/new visitors -->
   <script>
   (function() {
     var synced = false;
@@ -97,6 +87,16 @@
     }
   })();
   </script>
+
+  <!-- 3) Google Tag Manager — MUST come AFTER consent sync -->
+  <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KVNW2HC');
+  </script>
+  <!-- No <noscript> iframe to avoid bypassing consent -->
 
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
