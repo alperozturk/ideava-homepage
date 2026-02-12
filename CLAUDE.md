@@ -2,17 +2,16 @@
 
 ## Consent Management (Required on Every HTML Page)
 
-Every page must include all 7 elements in this exact order:
+Every page must include all 6 elements in this exact order:
 
-1. **Consent default script** (in `<head>`, before GTM) — sets all consent categories to `denied` with `'wait_for_update': 1000`
-2. **GTM snippet** (in `<head>`, after consent default) — container ID: `GTM-KVNW2HC`
-3. **Consent sync script** (in `<head>`, right after GTM) — runs `syncConsent()` immediately for returning visitors, then polls every 500ms for first-time visitors who interact with the banner. Must be in `<head>` so the immediate check fires within the 1000ms `wait_for_update` window.
-4. **TermsFeed cookie-consent script** (bottom of `<body>`) — `<script src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js">`
-5. **`cookieconsent.run()`** (bottom of `<body>`, after TermsFeed) — standalone banner, express consent, dark palette
-6. **Noscript fallback** (bottom of `<body>`) — `<noscript>` block crediting TermsFeed
-7. **Cookie settings button in footer** — `<button id="open_preferences_center" type="button" class="prefs-link">Cookie settings</button>`
+1. **Consent default + sync script** (single `<script>` in `<head>`, before GTM) — sets all consent categories to `denied` with `'wait_for_update': 500`, defines `syncConsentFromTermsFeedCookie()` which reads the TermsFeed cookie, deduplicates via `lastConsentCookie`, calls `gtag('consent', 'update', ...)`, and pushes a delayed (400ms) `consent_granted` or `consent_denied` custom event to dataLayer. Runs an initial check immediately, then polls every 500ms via `setInterval` as a safety net.
+2. **GTM snippet** (in `<head>`, **after** consent sync) — container ID: `GTM-KVNW2HC`. Must come after the consent sync so the `gtm.js` event (which triggers "All Pages") sees the consent update already in the dataLayer queue.
+3. **TermsFeed cookie-consent script** (bottom of `<body>`) — `<script src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js">`
+4. **`cookieconsent.run()`** (bottom of `<body>`, after TermsFeed) — standalone banner, express consent, dark palette
+5. **Noscript fallback** (bottom of `<body>`) — `<noscript>` block crediting TermsFeed
+6. **Cookie settings button in footer** — `<button id="open_preferences_center" type="button" class="prefs-link">Cookie settings</button>`
 
-Elements 1–3 go in `<head>`. Elements 4–6 go at the bottom of `<body>`.
+Elements 1–2 go in `<head>`. Elements 3–5 go at the bottom of `<body>`.
 
 ## GTM Container
 
