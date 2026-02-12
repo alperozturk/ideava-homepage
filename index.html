@@ -44,7 +44,7 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){ dataLayer.push(arguments); }
 
-    // Default: deny everything until user explicitly grants
+    // Set defaults to denied until user grants consent
     gtag('consent', 'default', {
       'ad_storage': 'denied',
       'ad_user_data': 'denied',
@@ -53,7 +53,7 @@
       'wait_for_update': 500
     });
 
-    // Helper: Updated to solve the race condition where GTM triggers fire before state updates
+    // Function to read TermsFeed cookie and notify GTM
     function syncConsentFromTermsFeedCookie() {
       try {
         var m = document.cookie.match(/(?:^|;\s*)cookie_consent_level=([^;]+)/);
@@ -70,15 +70,15 @@
           'ad_personalization': hasAds ? 'granted' : 'denied'
         };
 
-        // 1. Update the internal Google Consent state
+        // 1. Update the internal Google Consent state first
         gtag('consent', 'update', update);
 
-        // 2. IMPORTANT: Delay the event push by 300ms.
-        // This ensures GTM processes the 'granted' state BEFORE it evaluates Trigger 30.
+        // 2. DELAY: We wait 300ms before pushing the event. 
+        // This ensures Tag 28 sees the "granted" state when Trigger 30 fires.
         setTimeout(function() {
           if (hasAnalytics || hasAds) {
             window.dataLayer.push({
-              'event': 'consent_granted', // Matches Trigger 30 in your GTM workspace
+              'event': 'consent_granted', // Matches Trigger 30 in your GTM
               'consent_update': update
             });
           } else {
@@ -92,7 +92,7 @@
       }
     }
 
-    // Run once for returning visitors who already have the cookie
+    // Check immediately for returning visitors
     syncConsentFromTermsFeedCookie();
   </script>
 
@@ -166,21 +166,20 @@
         <div class="kicker">Insights</div>
         <h2>Latest Thoughts</h2>
       </div>
-      <div class="insights-carousel" role="region" aria-roledescription="carousel" aria-label="Latest insights">
+      <div class="insights-carousel" role="region" aria-roledescription="carousel">
         <div class="insights-track">
           <article class="insight-card">
             <span class="insight-category">Paid Media</span>
             <h3>AI Is Now an Ad Platform: Google and OpenAI's Race to Monetize Your Conversations</h3>
-            <p>Google launches shopping ads in AI Mode with checkout and a virtual sales agent. OpenAI rolls out ads in ChatGPT. Here's what this means for your ad strategy.</p>
+            <p>Google launches shopping ads in AI Mode with checkout and a virtual sales agent. OpenAI rolls out ads in ChatGPT.</p>
             <div class="insight-footer">
               <div class="insight-meta">
                 <time datetime="2026-02-12">Feb 12, 2026</time>
                 <span>•</span>
                 <span>9 min read</span>
               </div>
-              <a href="/insights/ai-ads-race-google-openai/" class="insight-link" aria-label="Read AI Ads Race: Google & OpenAI">
-                <span class="insight-link-pill">
-                  Read
+              <a href="/insights/ai-ads-race-google-openai/" class="insight-link">
+                <span class="insight-link-pill">Read
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M3 8h10M9 4l4 4-4 4"/>
                   </svg>
@@ -198,12 +197,35 @@
       <div class="caps">
         <div class="cap">
           <h3>Revenue Architecture</h3>
-          <p>From <strong>ICP &amp; offer</strong> to channels and SLAs — a demand engine designed to scale, not stall.</p>
+          <p>From <strong>ICP &amp; offer</strong> to channels designed to scale.</p>
         </div>
         <div class="cap">
           <h3>Positioning &amp; Narrative</h3>
           <p>Own the category conversation. Translate product truth into <strong>sales power</strong>.</p>
         </div>
+      </div>
+    </section>
+
+    <section id="work">
+      <div class="kicker">Track Record</div>
+      <h2>Selected Work</h2>
+      <div class="cases">
+        <article class="case">
+          <div>
+            <span class="badge">Pipeline +2300%</span>
+            <h4>CEEZER — Climate Tech</h4>
+            <p>Aligned brand, demand gen, and sales enablement.</p>
+          </div>
+          <div><strong>Role:</strong> Strategic advisor<br/><strong>Time:</strong> 1 year+</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="notes">
+      <div class="kicker">Notes</div>
+      <div class="notes-grid">
+        <blockquote>Marketing is an operating system, not a department.</blockquote>
+        <blockquote>Always talk to sales.</blockquote>
       </div>
     </section>
 
@@ -213,13 +235,12 @@
       <form id="contact-form" action="https://formspree.io/f/xanbzjzp" method="POST">
         <input type="text" name="name" placeholder="Your name" required />
         <input type="email" name="email" placeholder="Email" required />
-        <input type="text" name="company" placeholder="Company (optional)" />
         <textarea name="message" placeholder="How can I help?" required></textarea>
-        <input type="hidden" name="_subject" value="New message from IDEAVA contact form" />
-        <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
+        <input type="hidden" name="_subject" value="New message from IDEAVA" />
+        <input type="text" name="_gotcha" style="display:none" tabindex="-1" />
         <label class="consent-check">
           <input type="checkbox" name="privacy_consent" required />
-          <span>I agree to the <a href="/privacy/" target="_blank">Privacy Policy</a> and consent to my data being processed.</span>
+          <span>I agree to the <a href="/privacy/" target="_blank">Privacy Policy</a>.</span>
         </label>
         <div>
           <button class="btn btn--fill" type="submit">Send Message</button>
@@ -234,69 +255,67 @@
           <a href="/privacy/">Privacy Policy</a>
           <a href="/imprint/">Imprint</a>
         </div>
-        <button id="open_preferences_center" type="button" class="prefs-link">
-          Cookie settings
-        </button>
+        <button id="open_preferences_center" type="button" class="prefs-link">Cookie settings</button>
       </div>
       <p class="foot-copy">&copy; 2026 IDEAVA. All rights reserved.</p>
     </footer>
   </main>
 
   <script>
+    (function(){
+      const links = Array.from(document.querySelectorAll('header nav a'));
+      const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+      const setActive = (id) => links.forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + id ? 'true' : 'false'));
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{ if(e.isIntersecting) setActive(e.target.id); });
+      }, { rootMargin:'-40% 0px -55% 0px', threshold:0.01 });
+      sections.forEach(sec=>io.observe(sec));
+    })();
+  </script>
+
+  <script>
     const form = document.getElementById("contact-form");
     const statusEl = document.getElementById("form-status");
-
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
-      const data = new FormData(form);
       statusEl.textContent = "Sending…";
-
       try {
         const response = await fetch(form.action, {
           method: form.method,
-          body: data,
+          body: new FormData(form),
           headers: { 'Accept': 'application/json' }
         });
-
         if (response.ok) {
           statusEl.textContent = "✅ Thanks — we'll get back to you shortly.";
           form.reset();
         } else {
           statusEl.textContent = "⚠️ Oops, something went wrong.";
         }
-      } catch (error) {
-        statusEl.textContent = "⚠️ Network error.";
-      }
+      } catch (error) { statusEl.textContent = "⚠️ Network error."; }
     });
   </script>
 
- <script src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js" charset="UTF-8"></script>
- <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    cookieconsent.run({
-      "notice_banner_type": "standalone",
-      "consent_type": "express",
-      "palette": "dark",
-      "language": "en",
-      "page_load_consent_levels": ["strictly-necessary"],
-      "notice_banner_reject_button_hide": false,
-      "preferences_center_close_button_hide": false,
-      "page_refresh_confirmation_buttons": false,
-      "website_name": "IDEAVA",
-      "website_privacy_policy_url": "https://www.ideava.com/privacy-policy",
+  <script src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js" charset="UTF-8"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      cookieconsent.run({
+        "notice_banner_type": "standalone",
+        "consent_type": "express",
+        "palette": "dark",
+        "language": "en",
+        "page_load_consent_levels": ["strictly-necessary"],
+        "website_name": "IDEAVA",
+        "website_privacy_policy_url": "https://www.ideava.com/privacy-policy",
 
-      // Callback triggered when the user clicks 'Accept'
-      "onConsent": function() {
-        // Delay ensures the cookie is written before our sync function reads it
-        setTimeout(syncConsentFromTermsFeedCookie, 150);
-      },
-      // Callback triggered when settings are changed in the preferences center
-      "onChange": function() {
-        setTimeout(syncConsentFromTermsFeedCookie, 150);
-      }
+        // Callbacks to trigger GTM logic without a reload
+        "onConsent": function() {
+          setTimeout(syncConsentFromTermsFeedCookie, 200);
+        },
+        "onChange": function() {
+          setTimeout(syncConsentFromTermsFeedCookie, 200);
+        }
+      });
     });
-  });
- </script>
-
+  </script>
 </body>
 </html>
