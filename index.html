@@ -42,61 +42,89 @@
   </script>
 
   <!-- 1) Google Consent Mode: default to DENIED -->
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){ dataLayer.push(arguments); }
-    gtag('consent', 'default', {
-      'ad_storage': 'denied',
-      'ad_user_data': 'denied',
-      'ad_personalization': 'denied',
-      'analytics_storage': 'denied',
-      'wait_for_update': 1000
+  <!-- 1) Google Consent Mode v2: default DENIED (must be before GTM) -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+
+  // Default: deny everything until user explicitly grants
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 1000
+  });
+
+  // Helper: push events so GTM can refire tags after acceptance
+  function pushConsentState(state, updateObj) {
+    window.dataLayer.push({
+      event: 'consent_state_changed',
+      consent_state: state,            // "granted" | "denied"
+      consent_update: updateObj || {}, // what was granted/denied
+      page_location: location.href
     });
-  </script>
+    window.dataLayer.push({ event: state === 'granted' ? 'consent_granted' : 'consent_denied' });
+  }
 
-  <!-- 2) Consent sync: immediate check + polling for returning/new visitors -->
-  <script>
-  (function() {
-    var synced = false;
-    function syncConsent() {
-      if (synced) return;
-      try {
-        var match = document.cookie.match(/cookie_consent_level=([^;]+)/);
-        if (!match) return;
-        var levels = JSON.parse(decodeURIComponent(match[1]));
-        if (levels.tracking || levels.targeting) {
-          var update = {};
-          if (levels.tracking)  update.analytics_storage = 'granted';
-          if (levels.targeting) {
-            update.ad_storage = 'granted';
-            update.ad_user_data = 'granted';
-            update.ad_personalization = 'granted';
-          }
-          gtag('consent', 'update', update);
-          synced = true;
-        }
-      } catch(e) {}
+  // Read TermsFeed cookie + update Google Consent Mode
+  // IMPORTANT: Adjust cookie name if TermsFeed uses a different one in your account
+  function syncConsentFromTermsFeedCookie() {
+    try {
+      // Your existing cookie name:
+      // cookie_consent_level={"strictly-necessary":true,"tracking":true,"targeting":true,...}
+      var m = document.cookie.match(/(?:^|;\s*)cookie_consent_level=([^;]+)/);
+      if (!m) return false;
+
+      var levels = JSON.parse(decodeURIComponent(m[1]));
+
+      // Determine what "granted" means in your TermsFeed config
+      var hasAnalytics = !!levels.tracking;
+      var hasAds = !!levels.targeting;
+
+      var update = {
+        analytics_storage: hasAnalytics ? 'granted' : 'denied',
+        ad_storage: hasAds ? 'granted' : 'denied',
+        ad_user_data: hasAds ? 'granted' : 'denied',
+        ad_personalization: hasAds ? 'granted' : 'denied'
+      };
+
+      gtag('consent', 'update', update);
+
+      // Decide overall state for your GTM triggers
+      var state = (hasAnalytics || hasAds) ? 'granted' : 'denied';
+      pushConsentState(state, update);
+
+      return true;
+    } catch (e) {
+      return false;
     }
-    syncConsent();
-    if (!synced) {
-      var check = setInterval(function() {
-        syncConsent();
-        if (synced) clearInterval(check);
-      }, 500);
-      setTimeout(function() { clearInterval(check); }, 60000);
-    }
+  }
+
+  // Run once ASAP for returning visitors who already consented
+  syncConsentFromTermsFeedCookie();
+
+  // Fallback poller for cases where cookie is written after your scripts run
+  (function(){
+    var tries = 0;
+    var maxTries = 120; // 60s if interval 500ms
+    var t = setInterval(function(){
+      tries++;
+      var ok = syncConsentFromTermsFeedCookie();
+      if (ok || tries >= maxTries) clearInterval(t);
+    }, 500);
   })();
-  </script>
+</script>
 
-  <!-- 3) Google Tag Manager — MUST come AFTER consent sync -->
-  <script>
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-KVNW2HC');
-  </script>
-  <!-- No <noscript> iframe to avoid bypassing consent -->
+<!-- 2) Google Tag Manager -->
+<script>
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-KVNW2HC');
+</script>
+
 
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
