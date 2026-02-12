@@ -14,7 +14,8 @@
         'ad_storage': 'denied',
         'ad_user_data': 'denied',
         'ad_personalization': 'denied',
-        'analytics_storage': 'denied'
+        'analytics_storage': 'denied',
+        'wait_for_update': 1000
       });
     </script>
 
@@ -157,11 +158,12 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 IDEAVA. All rights reserved.</p>
+                <p>&copy; 2026 IDEAVA. All rights reserved.</p>
                 <div class="footer-legal">
                     <a href="/privacy/">Privacy Policy</a>
                     <a href="/imprint/" aria-current="page">Imprint</a>
                 </div>
+                <button id="open_preferences_center" type="button" class="prefs-link">Cookie settings</button>
             </div>
         </div>
     </footer>
@@ -194,16 +196,16 @@
           var match = document.cookie.match(/cookie_consent_level=([^;]+)/);
           if (!match) return;
           var levels = JSON.parse(decodeURIComponent(match[1]));
-          if (levels.tracking) {
-            gtag('consent', 'update', { 'analytics_storage': 'granted' });
+          if (levels.tracking || levels.targeting) {
+            var update = {};
+            if (levels.tracking)  update.analytics_storage = 'granted';
+            if (levels.targeting) {
+              update.ad_storage = 'granted';
+              update.ad_user_data = 'granted';
+              update.ad_personalization = 'granted';
+            }
+            gtag('consent', 'update', update);
             synced = true;
-          }
-          if (levels.targeting) {
-            gtag('consent', 'update', {
-              'ad_storage': 'granted',
-              'ad_user_data': 'granted',
-              'ad_personalization': 'granted'
-            });
           }
         } catch(e) {}
       }, 500);
