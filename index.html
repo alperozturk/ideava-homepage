@@ -6,7 +6,6 @@
   <title>IDEAVA — CMO/VP of Marketing on Demand</title>
   <meta name="description" content="Fractional CMO & VP of Marketing services for B2B companies. We build repeatable revenue engines through positioning, demand generation, and team leadership." />
 
-  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -41,90 +40,78 @@
   }
   </script>
 
-  <!-- 1) Google Consent Mode: default to DENIED -->
-  <!-- 1) Google Consent Mode v2: default DENIED (must be before GTM) -->
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){ dataLayer.push(arguments); }
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
 
-  // Default: deny everything until user explicitly grants
-  gtag('consent', 'default', {
-    ad_storage: 'denied',
-    ad_user_data: 'denied',
-    ad_personalization: 'denied',
-    analytics_storage: 'denied',
-    wait_for_update: 1000
-  });
-
-  // Helper: push events so GTM can refire tags after acceptance
-  function pushConsentState(state, updateObj) {
-    window.dataLayer.push({
-      event: 'consent_state_changed',
-      consent_state: state,            // "granted" | "denied"
-      consent_update: updateObj || {}, // what was granted/denied
-      page_location: location.href
+    // Default: deny everything until user explicitly grants
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+      wait_for_update: 1000
     });
-    window.dataLayer.push({ event: state === 'granted' ? 'consent_granted' : 'consent_denied' });
-  }
 
-  // Read TermsFeed cookie + update Google Consent Mode
-  // IMPORTANT: Adjust cookie name if TermsFeed uses a different one in your account
-  function syncConsentFromTermsFeedCookie() {
-    try {
-      // Your existing cookie name:
-      // cookie_consent_level={"strictly-necessary":true,"tracking":true,"targeting":true,...}
-      var m = document.cookie.match(/(?:^|;\s*)cookie_consent_level=([^;]+)/);
-      if (!m) return false;
+    // Helper: Updated to solve race conditions between 'update' and GTM triggers
+    function syncConsentFromTermsFeedCookie() {
+      try {
+        var m = document.cookie.match(/(?:^|;\s*)cookie_consent_level=([^;]+)/);
+        if (!m) return false;
 
-      var levels = JSON.parse(decodeURIComponent(m[1]));
+        var levels = JSON.parse(decodeURIComponent(m[1]));
 
-      // Determine what "granted" means in your TermsFeed config
-      var hasAnalytics = !!levels.tracking;
-      var hasAds = !!levels.targeting;
+        // Mapping TermsFeed categories to Google Consent Mode
+        var hasAnalytics = !!levels.tracking;
+        var hasAds = !!levels.targeting;
 
-      var update = {
-        analytics_storage: hasAnalytics ? 'granted' : 'denied',
-        ad_storage: hasAds ? 'granted' : 'denied',
-        ad_user_data: hasAds ? 'granted' : 'denied',
-        ad_personalization: hasAds ? 'granted' : 'denied'
-      };
+        var update = {
+          analytics_storage: hasAnalytics ? 'granted' : 'denied',
+          ad_storage: hasAds ? 'granted' : 'denied',
+          ad_user_data: hasAds ? 'granted' : 'denied',
+          ad_personalization: hasAds ? 'granted' : 'denied'
+        };
 
-      gtag('consent', 'update', update);
+        // 1. Tell Google the state has changed
+        gtag('consent', 'update', update);
 
-      // Decide overall state for your GTM triggers
-      var state = (hasAnalytics || hasAds) ? 'granted' : 'denied';
-      pushConsentState(state, update);
+        // 2. Small delay ensures GTM processes the internal state before evaluating triggers
+        setTimeout(function() {
+          if (hasAnalytics || hasAds) {
+            window.dataLayer.push({
+              event: 'consent_granted', // Matches Trigger 30 in your GTM
+              consent_update: update,
+              page_location: location.href
+            });
+          } else {
+            window.dataLayer.push({ event: 'consent_denied' });
+          }
+        }, 150);
 
-      return true;
-    } catch (e) {
-      return false;
+        return true;
+      } catch (e) {
+        return false;
+      }
     }
-  }
 
-  // Run once ASAP for returning visitors who already consented
-  syncConsentFromTermsFeedCookie();
+    // Run for returning visitors
+    syncConsentFromTermsFeedCookie();
 
-  // Fallback poller for cases where cookie is written after your scripts run
-  (function(){
-    var tries = 0;
-    var maxTries = 120; // 60s if interval 500ms
-    var t = setInterval(function(){
-      tries++;
-      var ok = syncConsentFromTermsFeedCookie();
-      if (ok || tries >= maxTries) clearInterval(t);
-    }, 500);
-  })();
-</script>
+    // Poller fallback
+    var consentPoll = setInterval(function() {
+      if (syncConsentFromTermsFeedCookie()) {
+        clearInterval(consentPoll);
+      }
+    }, 1000);
+  </script>
 
-<!-- 2) Google Tag Manager -->
-<script>
-  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-KVNW2HC');
-</script>
-
+    })(window,document,'script','dataLayer','GTM-KVNW2HC'); // Container GTM-KVNW2HC
+  </script>
 
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -134,7 +121,6 @@
 </head>
 <body>
 
-  <!-- Header -->
   <header class="site-header">
     <div class="header-row">
       <div class="id-block">
@@ -153,8 +139,6 @@
   </header>
 
   <main class="main">
-
-    <!-- Intro / Hero -->
     <section id="intro">
       <div class="kicker">Fractional CMO - VP of Marketing</div>
       <h1>Strategy × Story × Systems<br/>to Create Compounding Growth</h1>
@@ -165,7 +149,6 @@
       </div>
     </section>
 
-    <!-- Marquee -->
     <section aria-label="Highlights">
       <div class="marquee" role="region" aria-roledescription="carousel" aria-label="Highlights carousel">
         <div class="marquee-track">
@@ -176,7 +159,6 @@
           <span class="tag"><span class="dot"></span>ABM</span>
           <span class="tag"><span class="dot" style="background:var(--accent-2)"></span>RevOps</span>
           <span class="tag"><span class="dot"></span>Brand Strategy</span>
-          <!-- duplicate for infinite loop -->
           <span class="tag"><span class="dot"></span>CEEZER</span>
           <span class="tag"><span class="dot" style="background:var(--accent-2)"></span>UP42</span>
           <span class="tag"><span class="dot"></span>Beta Energy</span>
@@ -188,7 +170,6 @@
       </div>
     </section>
 
-    <!-- Latest Insights -->
     <section id="latest-insights" class="insights-carousel-section">
       <div class="insights-header">
         <div class="kicker">Insights</div>
@@ -196,7 +177,6 @@
       </div>
       <div class="insights-carousel" role="region" aria-roledescription="carousel" aria-label="Latest insights">
         <div class="insights-track">
-          <!-- LATEST_INSIGHTS_START -->
           <article class="insight-card">
             <span class="insight-category">Paid Media</span>
             <h3>AI Is Now an Ad Platform: Google and OpenAI's Race to Monetize Your Conversations</h3>
@@ -208,8 +188,7 @@
                 <span>9 min read</span>
               </div>
               <a href="/insights/ai-ads-race-google-openai/" class="insight-link" aria-label="Read AI Ads Race: Google & OpenAI">
-                <span class="insight-link-pill">
-                  Read
+                <span class="insight-link-pill">Read
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M3 8h10M9 4l4 4-4 4"/>
                   </svg>
@@ -228,8 +207,7 @@
                 <span>14 min read</span>
               </div>
               <a href="/insights/ai-overviews-ctr-decline/" class="insight-link" aria-label="Read Google AI Overviews Are Crushing CTRs">
-                <span class="insight-link-pill">
-                  Read
+                <span class="insight-link-pill">Read
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M3 8h10M9 4l4 4-4 4"/>
                   </svg>
@@ -237,38 +215,15 @@
               </a>
             </div>
           </article>
-          <article class="insight-card">
-            <span class="insight-category">Performance Marketing</span>
-            <h3>Google Ads Security: The Threats Draining Your Budget</h3>
-            <p>Up to 26% of your ad clicks may be fraudulent. Learn how to protect your Google Ads account from click fraud, account hijacking, and malvertising.</p>
-            <div class="insight-footer">
-              <div class="insight-meta">
-                <time datetime="2026-02-08">Feb 8, 2026</time>
-                <span>•</span>
-                <span>12 min read</span>
-              </div>
-              <a href="/insights/google-ads-security/" class="insight-link" aria-label="Read Google Ads Security">
-                <span class="insight-link-pill">
-                  Read
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 8h10M9 4l4 4-4 4"/>
-                  </svg>
-                </span>
-              </a>
-            </div>
-          </article>
-          <!-- LATEST_INSIGHTS_END -->
         </div>
       </div>
-      <a href="/insights/" class="insights-view-all">
-        View all insights
+      <a href="/insights/" class="insights-view-all">View all insights
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M3 8h10M9 4l4 4-4 4"/>
         </svg>
       </a>
     </section>
 
-    <!-- Capabilities -->
     <section id="capabilities">
       <div class="kicker">Capabilities</div>
       <h2>Where We Make the Biggest Difference</h2>
@@ -290,15 +245,8 @@
           <p>Hire, mentor, and organize a team to ship, learn fast, and <strong>compound wins</strong>.</p>
         </div>
       </div>
-
-      <div class="slabs">
-        <div class="slab"><div class="stat">+2300%<br/>enterprise leads</div><small>climate tech</small></div>
-        <div class="slab"><div class="stat">+150%<br/>YoY growth</div><small>geospatial SaaS • new markets</small></div>
-        <div class="slab"><div class="stat">1st EU<br/>gov contracts</div><small>industrial B2B • GTM</small></div>
-      </div>
     </section>
 
-    <!-- Work / Cases -->
     <section id="work">
       <div class="kicker">Track Record</div>
       <h2>Selected Work</h2>
@@ -314,69 +262,45 @@
         <article class="case">
           <div>
             <span class="badge" style="background:#d9f4ff;color:#0b4a63;border-color:#bfe9fb">YoY +150%</span>
-            <h4>UP42 — New Market Entry &amp; ICPs for various use cases, PPC campaigns, Lead-Gen, Content Strategy</h4>
+            <h4>UP42 — New Market Entry</h4>
             <p>Built ABM motion and partner marketing; improved win rates via product-led proof and enterprise references.</p>
           </div>
-          <div><strong>Role:</strong> Advisor to Marketing Director<br/><strong>Focus:</strong> Performance Marketing (LinkedIn Ads, Google Ads, ABM)<br/><strong>Time:</strong> 4 years</div>
-        </article>
-        <article class="case">
-          <div>
-            <span class="badge">First EU Gov Wins</span>
-            <h4>Beta Energy — Industrial B2B GTM</h4>
-            <p>Defined ICPs &amp; value props, rebuilt multilingual site, and established LinkedIn-led pipeline; improved RFP hit-rate with case libraries.</p>
-          </div>
-          <div><strong>Role:</strong> Fractional CMO<br/><strong>Focus:</strong> Brand Positioning, Messaging, Performance Marketing, B2B &amp; B2G<br/><strong>Time:</strong> 1 year+</div>
+          <div><strong>Role:</strong> Advisor to Marketing Director<br/><strong>Focus:</strong> Performance Marketing<br/><strong>Time:</strong> 4 years</div>
         </article>
       </div>
     </section>
 
-    <!-- Notes -->
     <section id="notes">
       <div class="kicker">Notes</div>
       <div class="notes-grid">
         <blockquote>Marketing is an operating system, not a department. The job is alignment: story → system → scale.</blockquote>
         <blockquote>Always talk to sales. They will let you know about the things you don't want to hear about your product.</blockquote>
         <blockquote>The best marketing strategy is the one your team can actually execute. Complexity kills consistency.</blockquote>
-        <blockquote>If your CEO and sales lead describe your product differently, you don't have a positioning problem. You have an alignment problem.</blockquote>
-        <blockquote>Most companies don't need more campaigns. They need fewer campaigns that actually compound.</blockquote>
-        <blockquote>Brand is what gets you on the shortlist. Demand gen is what gets you the meeting. Neither works without the other.</blockquote>
-        <blockquote>Data doesn't replace judgment. It sharpens it.</blockquote>
-        <blockquote>Your competitors aren't stealing your customers with better ads. They're stealing them with a clearer story.</blockquote>
-        <blockquote>Pipeline solves most arguments between marketing and sales. Build that first, debate attribution later.</blockquote>
       </div>
     </section>
 
-    <!-- Contact -->
     <section id="contact">
       <div class="kicker">Contact</div>
       <h2>Let's talk growth</h2>
-
       <form id="contact-form" action="https://formspree.io/f/xanbzjzp" method="POST">
         <input type="text" name="name" placeholder="Your name" required />
         <input type="email" name="email" placeholder="Email" required />
         <input type="text" name="company" placeholder="Company (optional)" />
         <textarea name="message" placeholder="How can I help?" required></textarea>
-
-        <!-- Optional hidden subject + honeypot -->
         <input type="hidden" name="_subject" value="New message from IDEAVA contact form" />
         <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
-
         <label class="consent-check">
           <input type="checkbox" name="privacy_consent" required />
-          <span>I agree to the <a href="/privacy/" target="_blank">Privacy Policy</a> and consent to my data being processed to respond to my inquiry.</span>
+          <span>I agree to the <a href="/privacy/" target="_blank">Privacy Policy</a> and consent to my data being processed.</span>
         </label>
-
         <div>
           <button class="btn btn--fill" type="submit">Send Message</button>
           <a class="btn btn--ghost" href="mailto:info@ideava.com">Email me instead</a>
         </div>
-
-        <!-- Status message -->
         <p id="form-status" style="margin-top:10px;"></p>
       </form>
     </section>
 
-    <!-- Footer -->
     <footer class="site-foot">
       <div class="foot-row">
         <div class="foot-legal">
@@ -389,17 +313,14 @@
       </div>
       <p class="foot-copy">&copy; 2026 IDEAVA. All rights reserved.</p>
     </footer>
-
   </main>
 
-  <!-- Contact form handler -->
   <script>
     const form = document.getElementById("contact-form");
     const statusEl = document.getElementById("form-status");
 
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
-
       const data = new FormData(form);
       statusEl.textContent = "Sending…";
 
@@ -412,17 +333,17 @@
 
         if (response.ok) {
           statusEl.textContent = "✅ Thanks — we'll get back to you shortly.";
-          form.reset();
+          // This triggers GTM Tag ID 21 (Form Success Listener)
+          form.reset(); 
         } else {
           statusEl.textContent = "⚠️ Oops, something went wrong. Please try again.";
         }
       } catch (error) {
-        statusEl.textContent = "⚠️ Network error. Please check your connection and try again.";
+        statusEl.textContent = "⚠️ Network error.";
       }
     });
   </script>
 
-  <!-- Active link highlighting -->
   <script>
     (function(){
       const links = Array.from(document.querySelectorAll('header nav a'));
@@ -436,35 +357,30 @@
     })();
   </script>
 
- <!-- TermsFeed Cookie Consent -->
-<script src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js" charset="UTF-8"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    cookieconsent.run({
-      notice_banner_type: "standalone",
-      consent_type: "express",
-      palette: "dark",
-      language: "en",
-      page_load_consent_levels: ["strictly-necessary"],
-      notice_banner_reject_button_hide: false,
-      preferences_center_close_button_hide: false,
-      page_refresh_confirmation_buttons: false,
-      website_name: "IDEAVA",
-      website_privacy_policy_url: "https://www.ideava.com/privacy-policy",
+  <script src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js" charset="UTF-8"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      cookieconsent.run({
+        notice_banner_type: "standalone",
+        consent_type: "express",
+        palette: "dark",
+        language: "en",
+        page_load_consent_levels: ["strictly-necessary"],
+        notice_banner_reject_button_hide: false,
+        preferences_center_close_button_hide: false,
+        page_refresh_confirmation_buttons: false,
+        website_name: "IDEAVA",
+        website_privacy_policy_url: "https://www.ideava.com/privacy-policy",
 
-      // Callbacks (if supported by your build)
-      onConsent: function() {
-        if (typeof syncConsentFromTermsFeedCookie === 'function') syncConsentFromTermsFeedCookie();
-      },
-      onChange: function() {
-        if (typeof syncConsentFromTermsFeedCookie === 'function') syncConsentFromTermsFeedCookie();
-      }
+        onConsent: function() {
+          // Add 200ms delay to ensure cookie is written before sync starts
+          setTimeout(syncConsentFromTermsFeedCookie, 200);
+        },
+        onChange: function() {
+          setTimeout(syncConsentFromTermsFeedCookie, 200);
+        }
+      });
     });
-
-    // Extra safety: also run once after banner setup
-    if (typeof syncConsentFromTermsFeedCookie === 'function') syncConsentFromTermsFeedCookie();
-  });
-</script>
-
+  </script>
 </body>
 </html>
