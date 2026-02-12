@@ -437,8 +437,8 @@
   </script>
 
  <!-- TermsFeed Cookie Consent -->
-  <script src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js" charset="UTF-8"></script>
-  <script>
+<script src="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js" charset="UTF-8"></script>
+<script>
   document.addEventListener('DOMContentLoaded', function () {
     cookieconsent.run({
       notice_banner_type: "standalone",
@@ -450,15 +450,21 @@
       preferences_center_close_button_hide: false,
       page_refresh_confirmation_buttons: false,
       website_name: "IDEAVA",
-      website_privacy_policy_url: "https://www.ideava.com/privacy-policy"
-    });
-  });
-  </script>
+      website_privacy_policy_url: "https://www.ideava.com/privacy-policy",
 
-  <noscript>
-    Free cookie consent management tool by
-    <a href="https://www.termsfeed.com/">TermsFeed</a>
-  </noscript>
+      // Callbacks (if supported by your build)
+      onConsent: function() {
+        if (typeof syncConsentFromTermsFeedCookie === 'function') syncConsentFromTermsFeedCookie();
+      },
+      onChange: function() {
+        if (typeof syncConsentFromTermsFeedCookie === 'function') syncConsentFromTermsFeedCookie();
+      }
+    });
+
+    // Extra safety: also run once after banner setup
+    if (typeof syncConsentFromTermsFeedCookie === 'function') syncConsentFromTermsFeedCookie();
+  });
+</script>
 
 </body>
 </html>
