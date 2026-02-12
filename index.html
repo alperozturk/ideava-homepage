@@ -22,21 +22,8 @@
       "addressLocality": "Berlin",
       "addressCountry": "DE"
     },
-    "sameAs": [
-      "https://linkedin.com/company/ideava"
-    ],
-    "founder": {
-      "@type": "Person",
-      "name": "Alper Ozturk"
-    }
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "IDEAVA",
-    "url": "https://ideava.com"
+    "sameAs": ["https://linkedin.com/company/ideava"],
+    "founder": { "@type": "Person", "name": "Alper Ozturk" }
   }
   </script>
 
@@ -44,20 +31,25 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){ dataLayer.push(arguments); }
 
-    // Set defaults to denied until user grants consent
+    // Set default consent state to denied
     gtag('consent', 'default', {
       'ad_storage': 'denied',
+      'analytics_storage': 'denied',
       'ad_user_data': 'denied',
       'ad_personalization': 'denied',
-      'analytics_storage': 'denied',
       'wait_for_update': 500
     });
 
-    // Function to read TermsFeed cookie and notify GTM
+    var lastConsentCookie = "";
+
     function syncConsentFromTermsFeedCookie() {
       try {
         var m = document.cookie.match(/(?:^|;\s*)cookie_consent_level=([^;]+)/);
         if (!m) return false;
+        
+        // Prevent duplicate event pushes if the cookie hasn't changed
+        if (m[1] === lastConsentCookie) return true;
+        lastConsentCookie = m[1];
 
         var levels = JSON.parse(decodeURIComponent(m[1]));
         var hasAnalytics = !!levels.tracking;
@@ -70,21 +62,20 @@
           'ad_personalization': hasAds ? 'granted' : 'denied'
         };
 
-        // 1. Update the internal Google Consent state first
+        // 1. Update the internal Google Consent state
         gtag('consent', 'update', update);
 
-        // 2. DELAY: We wait 300ms before pushing the event. 
-        // This ensures Tag 28 sees the "granted" state when Trigger 30 fires.
+        // 2. DELAYED EVENT: This ensures Tag 28 sees the "granted" state before evaluating Trigger 30
         setTimeout(function() {
           if (hasAnalytics || hasAds) {
             window.dataLayer.push({
-              'event': 'consent_granted', // Matches Trigger 30 in your GTM
+              'event': 'consent_granted', // Matches Trigger 30 in your GTM workspace
               'consent_update': update
             });
           } else {
             window.dataLayer.push({ 'event': 'consent_denied' });
           }
-        }, 300);
+        }, 400);
 
         return true;
       } catch (e) {
@@ -92,7 +83,10 @@
       }
     }
 
-    // Check immediately for returning visitors
+    // Safety Net: Poll for cookie changes every 500ms in case library callbacks fail
+    setInterval(syncConsentFromTermsFeedCookie, 500);
+
+    // Initial check for returning visitors
     syncConsentFromTermsFeedCookie();
   </script>
 
@@ -145,16 +139,12 @@
         <div class="marquee-track">
           <span class="tag"><span class="dot"></span>CEEZER</span>
           <span class="tag"><span class="dot" style="background:var(--accent-2)"></span>UP42</span>
-          <span class="tag"><span class="dot"></span>Beta Energy</span>
-          <span class="tag"><span class="dot" style="background:var(--accent-2)"></span>Demand Gen</span>
-          <span class="tag"><span class="dot"></span>ABM</span>
+          <span class="tag"><span class="dot"></span>Demand Gen</span>
           <span class="tag"><span class="dot" style="background:var(--accent-2)"></span>RevOps</span>
           <span class="tag"><span class="dot"></span>Brand Strategy</span>
           <span class="tag"><span class="dot"></span>CEEZER</span>
           <span class="tag"><span class="dot" style="background:var(--accent-2)"></span>UP42</span>
-          <span class="tag"><span class="dot"></span>Beta Energy</span>
-          <span class="tag"><span class="dot" style="background:var(--accent-2)"></span>Demand Gen</span>
-          <span class="tag"><span class="dot"></span>ABM</span>
+          <span class="tag"><span class="dot"></span>Demand Gen</span>
           <span class="tag"><span class="dot" style="background:var(--accent-2)"></span>RevOps</span>
           <span class="tag"><span class="dot"></span>Brand Strategy</span>
         </div>
@@ -170,8 +160,8 @@
         <div class="insights-track">
           <article class="insight-card">
             <span class="insight-category">Paid Media</span>
-            <h3>AI Is Now an Ad Platform: Google and OpenAI's Race to Monetize Your Conversations</h3>
-            <p>Google launches shopping ads in AI Mode with checkout and a virtual sales agent. OpenAI rolls out ads in ChatGPT.</p>
+            <h3>AI Is Now an Ad Platform</h3>
+            <p>Google and OpenAI's race to monetize your conversations.</p>
             <div class="insight-footer">
               <div class="insight-meta">
                 <time datetime="2026-02-12">Feb 12, 2026</time>
@@ -203,29 +193,6 @@
           <h3>Positioning &amp; Narrative</h3>
           <p>Own the category conversation. Translate product truth into <strong>sales power</strong>.</p>
         </div>
-      </div>
-    </section>
-
-    <section id="work">
-      <div class="kicker">Track Record</div>
-      <h2>Selected Work</h2>
-      <div class="cases">
-        <article class="case">
-          <div>
-            <span class="badge">Pipeline +2300%</span>
-            <h4>CEEZER — Climate Tech</h4>
-            <p>Aligned brand, demand gen, and sales enablement.</p>
-          </div>
-          <div><strong>Role:</strong> Strategic advisor<br/><strong>Time:</strong> 1 year+</div>
-        </article>
-      </div>
-    </section>
-
-    <section id="notes">
-      <div class="kicker">Notes</div>
-      <div class="notes-grid">
-        <blockquote>Marketing is an operating system, not a department.</blockquote>
-        <blockquote>Always talk to sales.</blockquote>
       </div>
     </section>
 
@@ -306,14 +273,8 @@
         "page_load_consent_levels": ["strictly-necessary"],
         "website_name": "IDEAVA",
         "website_privacy_policy_url": "https://www.ideava.com/privacy-policy",
-
-        // Callbacks to trigger GTM logic without a reload
-        "onConsent": function() {
-          setTimeout(syncConsentFromTermsFeedCookie, 200);
-        },
-        "onChange": function() {
-          setTimeout(syncConsentFromTermsFeedCookie, 200);
-        }
+        "onConsent": function() { syncConsentFromTermsFeedCookie(); },
+        "onChange": function() { syncConsentFromTermsFeedCookie(); }
       });
     });
   </script>
