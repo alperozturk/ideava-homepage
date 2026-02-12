@@ -17,60 +17,75 @@
     <meta name="twitter:title" content="Why Your Analytics Are Lying (And What AI Can Actually Fix)">
     <meta name="twitter:description" content="Your analytics shows confident numbers. But you're missing 30-50% of reality. Here's what to do.">
 
-    <!-- Google Consent Mode: default to DENIED -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){ dataLayer.push(arguments); }
+
+      // Set default consent state to denied
       gtag('consent', 'default', {
         'ad_storage': 'denied',
+        'analytics_storage': 'denied',
         'ad_user_data': 'denied',
         'ad_personalization': 'denied',
-        'analytics_storage': 'denied',
-        'wait_for_update': 1000
+        'wait_for_update': 500
       });
+
+      var lastConsentCookie = "";
+
+      function syncConsentFromTermsFeedCookie() {
+        try {
+          var m = document.cookie.match(/(?:^|;\s*)cookie_consent_level=([^;]+)/);
+          if (!m) return false;
+
+          // Prevent duplicate event pushes if the cookie hasn't changed
+          if (m[1] === lastConsentCookie) return true;
+          lastConsentCookie = m[1];
+
+          var levels = JSON.parse(decodeURIComponent(m[1]));
+          var hasAnalytics = !!levels.tracking;
+          var hasAds = !!levels.targeting;
+
+          var update = {
+            'analytics_storage': hasAnalytics ? 'granted' : 'denied',
+            'ad_storage': hasAds ? 'granted' : 'denied',
+            'ad_user_data': hasAds ? 'granted' : 'denied',
+            'ad_personalization': hasAds ? 'granted' : 'denied'
+          };
+
+          // 1. Update the internal Google Consent state
+          gtag('consent', 'update', update);
+
+          // 2. DELAYED EVENT: This ensures Tag 28 sees the "granted" state before evaluating Trigger 30
+          setTimeout(function() {
+            if (hasAnalytics || hasAds) {
+              window.dataLayer.push({
+                'event': 'consent_granted', // Matches Trigger 30 in your GTM workspace
+                'consent_update': update
+              });
+            } else {
+              window.dataLayer.push({ 'event': 'consent_denied' });
+            }
+          }, 400);
+
+          return true;
+        } catch (e) {
+          return false;
+        }
+      }
+
+      // Safety Net: Poll for cookie changes every 500ms in case library callbacks fail
+      setInterval(syncConsentFromTermsFeedCookie, 500);
+
+      // Initial check for returning visitors
+      syncConsentFromTermsFeedCookie();
     </script>
 
-    <!-- Google Tag Manager (loads but respects Consent Mode) -->
     <script>
       (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
         new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
         j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
       })(window,document,'script','dataLayer','GTM-KVNW2HC');
-    </script>
-
-    <!-- Consent sync: immediate check + polling for returning/new visitors -->
-    <script>
-    (function() {
-      var synced = false;
-      function syncConsent() {
-        if (synced) return;
-        try {
-          var match = document.cookie.match(/cookie_consent_level=([^;]+)/);
-          if (!match) return;
-          var levels = JSON.parse(decodeURIComponent(match[1]));
-          if (levels.tracking || levels.targeting) {
-            var update = {};
-            if (levels.tracking)  update.analytics_storage = 'granted';
-            if (levels.targeting) {
-              update.ad_storage = 'granted';
-              update.ad_user_data = 'granted';
-              update.ad_personalization = 'granted';
-            }
-            gtag('consent', 'update', update);
-            synced = true;
-          }
-        } catch(e) {}
-      }
-      syncConsent();
-      if (!synced) {
-        var check = setInterval(function() {
-          syncConsent();
-          if (synced) clearInterval(check);
-        }, 500);
-        setTimeout(function() { clearInterval(check); }, 60000);
-      }
-    })();
     </script>
 
     <!-- Favicon -->
